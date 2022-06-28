@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="MySQL初级篇1、基本SELECT语句2、运算符3、排序与分页4、多表查询5、子查询6、单行函数、聚合函数7、约束8、视图9、存储过程、函数10、变量、流程控制与游标11、触发器MySQL高级篇1、MySQL逻辑架构图 简化为三层结构：  连接层：客户端和服务器端建立连接，客户端发送 SQL 至服务器端；  SQL 层（服务层）：对 SQL 语句进行查询处理；与数据库文件的存储方式无关；  存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL">
+<meta property="og:url" content="http://example.com/2022/06/28/MySQL/index.html">
+<meta property="og:site_name" content="博客">
+<meta property="og:description" content="MySQL初级篇1、基本SELECT语句2、运算符3、排序与分页4、多表查询5、子查询6、单行函数、聚合函数7、约束8、视图9、存储过程、函数10、变量、流程控制与游标11、触发器MySQL高级篇1、MySQL逻辑架构图 简化为三层结构：  连接层：客户端和服务器端建立连接，客户端发送 SQL 至服务器端；  SQL 层（服务层）：对 SQL 语句进行查询处理；与数据库文件的存储方式无关；  存储">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdn.net/20180831160049148?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pfcnlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="article:published_time" content="2022-06-28T07:04:04.621Z">
+<meta property="article:modified_time" content="2022-06-28T07:04:04.622Z">
+<meta property="article:author" content="阿 星">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180831160049148?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pfcnlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+
+<link rel="canonical" href="http://example.com/2022/06/28/MySQL/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL | 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="download fa-fw"></i>资源</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/MySQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="阿 星">
+      <meta itemprop="description" content="记录java学习历程">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-28 15:04:04" itemprop="dateCreated datePublished" datetime="2022-06-28T15:04:04+08:00">2022-06-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="MySQL初级篇"><a href="#MySQL初级篇" class="headerlink" title="MySQL初级篇"></a>MySQL初级篇</h2><h4 id="1、基本SELECT语句"><a href="#1、基本SELECT语句" class="headerlink" title="1、基本SELECT语句"></a>1、基本SELECT语句</h4><h4 id="2、运算符"><a href="#2、运算符" class="headerlink" title="2、运算符"></a>2、运算符</h4><h4 id="3、排序与分页"><a href="#3、排序与分页" class="headerlink" title="3、排序与分页"></a>3、排序与分页</h4><h4 id="4、多表查询"><a href="#4、多表查询" class="headerlink" title="4、多表查询"></a>4、多表查询</h4><h4 id="5、子查询"><a href="#5、子查询" class="headerlink" title="5、子查询"></a>5、子查询</h4><h4 id="6、单行函数、聚合函数"><a href="#6、单行函数、聚合函数" class="headerlink" title="6、单行函数、聚合函数"></a>6、单行函数、聚合函数</h4><h4 id="7、约束"><a href="#7、约束" class="headerlink" title="7、约束"></a>7、约束</h4><h4 id="8、视图"><a href="#8、视图" class="headerlink" title="8、视图"></a>8、视图</h4><h4 id="9、存储过程、函数"><a href="#9、存储过程、函数" class="headerlink" title="9、存储过程、函数"></a>9、存储过程、函数</h4><h4 id="10、变量、流程控制与游标"><a href="#10、变量、流程控制与游标" class="headerlink" title="10、变量、流程控制与游标"></a>10、变量、流程控制与游标</h4><h4 id="11、触发器"><a href="#11、触发器" class="headerlink" title="11、触发器"></a>11、触发器</h4><h2 id="MySQL高级篇"><a href="#MySQL高级篇" class="headerlink" title="MySQL高级篇"></a>MySQL高级篇</h2><h4 id="1、MySQL逻辑架构图"><a href="#1、MySQL逻辑架构图" class="headerlink" title="1、MySQL逻辑架构图"></a>1、MySQL逻辑架构图</h4><p><img src="https://img-blog.csdn.net/20180831160049148?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3pfcnlhbg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="img"></p>
+<p>简化为三层结构：</p>
+<ol>
+<li><p>连接层：客户端和服务器端建立连接，客户端发送 SQL 至服务器端；</p>
+</li>
+<li><p>SQL 层（服务层）：对 SQL 语句进行查询处理；与数据库文件的存储方式无关；</p>
+</li>
+<li><p>存储引擎层：与数据库文件打交道，负责数据的存储和读取。</p>
+</li>
+</ol>
+<h4 id="2、存储引擎"><a href="#2、存储引擎" class="headerlink" title="2、存储引擎"></a>2、存储引擎</h4><h4 id="3、索引"><a href="#3、索引" class="headerlink" title="3、索引"></a>3、索引</h4><h4 id="4、数据库设计规范"><a href="#4、数据库设计规范" class="headerlink" title="4、数据库设计规范"></a>4、数据库设计规范</h4><h4 id="5、数据库其他调优策略"><a href="#5、数据库其他调优策略" class="headerlink" title="5、数据库其他调优策略"></a>5、数据库其他调优策略</h4><h4 id="6、事务"><a href="#6、事务" class="headerlink" title="6、事务"></a>6、事务</h4><h4 id="7、锁"><a href="#7、锁" class="headerlink" title="7、锁"></a>7、锁</h4><h4 id="8、MVCC"><a href="#8、MVCC" class="headerlink" title="8、MVCC"></a>8、MVCC</h4><h4 id="9、数据库日志"><a href="#9、数据库日志" class="headerlink" title="9、数据库日志"></a>9、数据库日志</h4><h4 id="10、主从赋值"><a href="#10、主从赋值" class="headerlink" title="10、主从赋值"></a>10、主从赋值</h4><h4 id="11、数据库备份及恢复"><a href="#11、数据库备份及恢复" class="headerlink" title="11、数据库备份及恢复"></a>11、数据库备份及恢复</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/28/SpringCloud/" rel="prev" title="SpringCloud">
+      <i class="fa fa-chevron-left"></i> SpringCloud
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/06/28/Redis/" rel="next" title="Redis">
+      Redis <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E5%88%9D%E7%BA%A7%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">MySQL初级篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%9F%BA%E6%9C%ACSELECT%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、基本SELECT语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、排序与分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.0.4.</span> <span class="nav-text">4、多表查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.0.5.</span> <span class="nav-text">5、子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%E3%80%81%E5%8D%95%E8%A1%8C%E5%87%BD%E6%95%B0%E3%80%81%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.6.</span> <span class="nav-text">6、单行函数、聚合函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7%E3%80%81%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.0.7.</span> <span class="nav-text">7、约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8%E3%80%81%E8%A7%86%E5%9B%BE"><span class="nav-number">1.0.8.</span> <span class="nav-text">8、视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9%E3%80%81%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E3%80%81%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.9.</span> <span class="nav-text">9、存储过程、函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10%E3%80%81%E5%8F%98%E9%87%8F%E3%80%81%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%B8%B8%E6%A0%87"><span class="nav-number">1.0.10.</span> <span class="nav-text">10、变量、流程控制与游标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11%E3%80%81%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">1.0.11.</span> <span class="nav-text">11、触发器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E9%AB%98%E7%BA%A7%E7%AF%87"><span class="nav-number">2.</span> <span class="nav-text">MySQL高级篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81MySQL%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">2.0.1.</span> <span class="nav-text">1、MySQL逻辑架构图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">2.0.2.</span> <span class="nav-text">2、存储引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E7%B4%A2%E5%BC%95"><span class="nav-number">2.0.3.</span> <span class="nav-text">3、索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="nav-number">2.0.4.</span> <span class="nav-text">4、数据库设计规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B6%E4%BB%96%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5"><span class="nav-number">2.0.5.</span> <span class="nav-text">5、数据库其他调优策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%E3%80%81%E4%BA%8B%E5%8A%A1"><span class="nav-number">2.0.6.</span> <span class="nav-text">6、事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7%E3%80%81%E9%94%81"><span class="nav-number">2.0.7.</span> <span class="nav-text">7、锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8%E3%80%81MVCC"><span class="nav-number">2.0.8.</span> <span class="nav-text">8、MVCC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%A5%E5%BF%97"><span class="nav-number">2.0.9.</span> <span class="nav-text">9、数据库日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10%E3%80%81%E4%B8%BB%E4%BB%8E%E8%B5%8B%E5%80%BC"><span class="nav-number">2.0.10.</span> <span class="nav-text">10、主从赋值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%8F%8A%E6%81%A2%E5%A4%8D"><span class="nav-number">2.0.11.</span> <span class="nav-text">11、数据库备份及恢复</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿 星"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">阿 星</p>
+  <div class="site-description" itemprop="description">记录java学习历程</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/XueZhengXiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;XueZhengXiang" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2235915272@qq.com" title="E-Mail → mailto:2235915272@qq.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      https://pdai.tech/
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://baidu.com/" title="https:&#x2F;&#x2F;baidu.com" rel="noopener" target="_blank">百度</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://fishc.com.cn/" title="https:&#x2F;&#x2F;fishc.com.cn" rel="noopener" target="_blank">鱼C论坛</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-21 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿 星</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
