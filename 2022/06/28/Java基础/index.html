@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="javaSE">
+  <meta name="description" content="javaSE数据类型   数据类型 关键字 内存占用 范围    字节 byte 1字节 -128~127   短整型 short 2字节 2^16~2^16-1   整型 int 4字节 2^32~2^32-1   长整型 long 8字节 2^64~2^64-1   单精度浮点 flot 4字节 -3.4E38~3.4E38   双精度浮点 double 8字节 -2.23E308~2.23E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java基础">
 <meta property="og:url" content="http://example.com/2022/06/28/Java%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="博客">
-<meta property="og:description" content="javaSE">
+<meta property="og:description" content="javaSE数据类型   数据类型 关键字 内存占用 范围    字节 byte 1字节 -128~127   短整型 short 2字节 2^16~2^16-1   整型 int 4字节 2^32~2^32-1   长整型 long 8字节 2^64~2^64-1   单精度浮点 flot 4字节 -3.4E38~3.4E38   双精度浮点 double 8字节 -2.23E308~2.23E">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-28T03:30:30.302Z">
-<meta property="article:modified_time" content="2022-06-28T03:30:30.302Z">
+<meta property="article:modified_time" content="2022-06-29T03:23:59.218Z">
 <meta property="article:author" content="阿 星">
 <meta name="twitter:card" content="summary">
 
@@ -197,6 +197,13 @@
 
               <time title="创建时间：2022-06-28 11:30:30" itemprop="dateCreated datePublished" datetime="2022-06-28T11:30:30+08:00">2022-06-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-29 11:23:59" itemprop="dateModified" datetime="2022-06-29T11:23:59+08:00">2022-06-29</time>
+              </span>
 
           
 
@@ -209,7 +216,266 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="javaSE"><a href="#javaSE" class="headerlink" title="javaSE"></a>javaSE</h3>
+        <h2 id="javaSE"><a href="#javaSE" class="headerlink" title="javaSE"></a>javaSE</h2><h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>关键字</th>
+<th>内存占用</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>字节</td>
+<td>byte</td>
+<td>1字节</td>
+<td>-128~127</td>
+</tr>
+<tr>
+<td>短整型</td>
+<td>short</td>
+<td>2字节</td>
+<td>2^16~2^16-1</td>
+</tr>
+<tr>
+<td>整型</td>
+<td>int</td>
+<td>4字节</td>
+<td>2^32~2^32-1</td>
+</tr>
+<tr>
+<td>长整型</td>
+<td>long</td>
+<td>8字节</td>
+<td>2^64~2^64-1</td>
+</tr>
+<tr>
+<td>单精度浮点</td>
+<td>flot</td>
+<td>4字节</td>
+<td>-3.4E38~3.4E38</td>
+</tr>
+<tr>
+<td>双精度浮点</td>
+<td>double</td>
+<td>8字节</td>
+<td>-2.23E308~2.23E308</td>
+</tr>
+<tr>
+<td>字符型</td>
+<td>char</td>
+<td>2字节</td>
+<td>0~2^16-1</td>
+</tr>
+<tr>
+<td>布尔</td>
+<td>boolean</td>
+<td>1字节</td>
+<td>true，false</td>
+</tr>
+</tbody></table>
+<h3 id="数据类型转换"><a href="#数据类型转换" class="headerlink" title="数据类型转换"></a>数据类型转换</h3><h4 id="隐式类型转换"><a href="#隐式类型转换" class="headerlink" title="隐式类型转换"></a>隐式类型转换</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">short</span> <span class="variable">s</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> s;<span class="comment">//隐式转换</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"><span class="type">short</span> <span class="variable">s</span> <span class="operator">=</span> (<span class="type">short</span>)i;<span class="comment">//强制类型转换</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><h4 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=、-+、+=、*=、/=</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="关系运算符"><a href="#关系运算符" class="headerlink" title="关系运算符"></a>关系运算符</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">==,!=,&gt;,&gt;=,&lt;,&lt;=、<span class="literal">true</span>、<span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&amp;逻辑与:有<span class="literal">false</span>则<span class="literal">false</span>。</span><br><span class="line">|逻辑或:有<span class="literal">true</span>则<span class="literal">true</span>。</span><br><span class="line">^逻辑异或:相同为<span class="literal">false</span>，不同为<span class="literal">true</span>。</span><br><span class="line">!逻辑非:非<span class="literal">false</span>则<span class="literal">true</span>，非<span class="literal">true</span>则<span class="literal">false</span>。</span><br><span class="line">&amp;&amp;具有短路效果:左边是<span class="literal">false</span>，右边不执行。</span><br><span class="line">||具有短路效果:左边是<span class="literal">true</span>,右边不执行</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="位运算符"><a href="#位运算符" class="headerlink" title="位运算符"></a>位运算符</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;	左移位	a &lt;&lt; <span class="number">2</span>	空位补<span class="number">0</span>，被移除的高位丢弃   <span class="number">1</span>&lt;&lt;<span class="number">1</span>=<span class="number">2</span>;</span><br><span class="line">&gt;&gt;	右移位	a &gt;&gt; <span class="number">2</span>	被移位的二进制最高位为<span class="number">0</span>，右移后，空缺位补<span class="number">0</span>；最高位为<span class="number">1</span>，空缺位补<span class="number">1</span>  <span class="number">1</span>&gt;&gt;<span class="number">1</span>=<span class="number">0</span>,<span class="number">2</span>&gt;&gt;<span class="number">1</span>=<span class="number">1</span></span><br><span class="line">&gt;&gt;&gt;	无符号右移位	a &gt;&gt;&gt; <span class="number">2</span>	被移位二进制最高位无论是<span class="number">0</span>还是<span class="number">1</span>，空缺位都用<span class="number">0</span>补 </span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="三运运算符"><a href="#三运运算符" class="headerlink" title="三运运算符"></a>三运运算符</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? a:b;				<span class="number">1</span>==<span class="number">1</span> ?<span class="literal">true</span>:<span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="访问修饰符"><a href="#访问修饰符" class="headerlink" title="访问修饰符"></a>访问修饰符</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>同一类</th>
+<th>同一包</th>
+<th>派生类</th>
+<th>不同包</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>private</td>
+<td>能</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>default</td>
+<td>能</td>
+<td>能</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>protected</td>
+<td>能</td>
+<td>能</td>
+<td>能</td>
+<td></td>
+</tr>
+<tr>
+<td>public</td>
+<td>能</td>
+<td>能</td>
+<td>能</td>
+<td>能</td>
+</tr>
+</tbody></table>
+<h3 id="方法的重写、重载"><a href="#方法的重写、重载" class="headerlink" title="方法的重写、重载"></a>方法的重写、重载</h3><p><strong>重写 总结：</strong><br>1.发生在父类与子类之间<br>2.方法名，参数列表，返回类型（除过子类中方法的返回类型是父类中返回类型的子类）必须相同<br>3.重写方法的访问修饰符权限大于等于父类方法（public&gt;protected&gt;default&gt;private)<br>4.重写方法抛出异常小于父类抛出异常</p>
+<p> 程序编译失败,原因分析：</p>
+<p>1、在java多态机制中，对象引用fs在编译时期是属于父类类型也即Father类型，但是在运行时fs属于子类类型，也就是Son类型。</p>
+<p>2、也就是说在编译的时候，编译器发现catch中的IOException完全能将父类方法中抛出的异常捕获，因此编译通过，但是在运行时期，由于fs变成了子类类型，子类重写的方法抛出的异常是Exception，显然IOException不能捕获这个比它更大的异常，因此在运行时期也就出现失败。</p>
+<p>总结：这个示例也就演示了一个道理，在java中，子类重写父类的方法时，子类如果选择抛出异常，那么抛出的异常类型不能大于父类的异常类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">father_function</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">		<span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;a.txt&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Son</span> <span class="keyword">extends</span> <span class="title class_">Father</span> &#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">father_function</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">		<span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;b.txt&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="type">Father</span> <span class="variable">fs</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Son</span>();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			fs.father_function();</span><br><span class="line">		&#125;<span class="keyword">catch</span> (IOException ie) &#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;发生了异常&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>重载 总结：</strong><br> 1.重载Overload是一个类中多态性的一种表现<br> 2.重载要求同名方法的参数列表不同(参数类型，参数个数甚至是参数顺序)<br> 3.重载的时候，返回值类型可以相同也可以不相同。无法以返回型别作为重载函数的区分标准</p>
+<h3 id="java集合"><a href="#java集合" class="headerlink" title="java集合"></a>java集合</h3><h4 id="Collection接口"><a href="#Collection接口" class="headerlink" title="Collection接口"></a>Collection接口</h4><table>
+<thead>
+<tr>
+<th>List接口实现类</th>
+<th>数据结构</th>
+<th>默认值</th>
+<th>扩容</th>
+<th>线程安全</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ArrayList</td>
+<td>基于动态数组</td>
+<td>默认10</td>
+<td>old+(old&gt;&gt;1)</td>
+<td>非线程安全</td>
+</tr>
+<tr>
+<td>LinkedList</td>
+<td>双向链表</td>
+<td></td>
+<td></td>
+<td>非线程安全</td>
+</tr>
+<tr>
+<td>Vector</td>
+<td>数组</td>
+<td>默认10</td>
+<td>2倍</td>
+<td>线程安全</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Set接口实现类</th>
+<th>数据结构</th>
+<th>有序性</th>
+<th>默认值</th>
+<th>扩容</th>
+<th>线程安全</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HashSet</td>
+<td>底层HashMap</td>
+<td>无序</td>
+<td>16</td>
+<td>2倍</td>
+<td>非线程安全</td>
+</tr>
+<tr>
+<td>LinkedHashSet</td>
+<td>双向链表(继承HashSet)</td>
+<td>有序</td>
+<td></td>
+<td></td>
+<td>非线程安全</td>
+</tr>
+<tr>
+<td>TreeSet</td>
+<td>二叉树（基于比较器）</td>
+<td>有序</td>
+<td></td>
+<td></td>
+<td>非线程安全</td>
+</tr>
+</tbody></table>
+<h4 id="Map接口"><a href="#Map接口" class="headerlink" title="Map接口"></a>Map接口</h4><table>
+<thead>
+<tr>
+<th>map接口实现类</th>
+<th>数据结构</th>
+<th>有序性</th>
+<th>默认值</th>
+<th>扩容</th>
+<th>键值对为空</th>
+<th>线程安全</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HashMap</td>
+<td>数组+链表+红黑树</td>
+<td>无序</td>
+<td>16</td>
+<td>2倍</td>
+<td>可以</td>
+<td>非线程安全</td>
+</tr>
+<tr>
+<td>HashTable</td>
+<td>hash表</td>
+<td>无序</td>
+<td>11</td>
+<td>(old&lt;&lt;1)+1</td>
+<td>都不可以</td>
+<td>线程安全</td>
+</tr>
+<tr>
+<td>Properties</td>
+<td>HashTable子类</td>
+<td></td>
+<td>11</td>
+<td>（size&lt;&lt;1)+1</td>
+<td>都为String</td>
+<td>线程安全</td>
+</tr>
+<tr>
+<td>TreeMap</td>
+<td>红黑树（基于比较器）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>非线程安全</td>
+</tr>
+<tr>
+<td>ConcurrentHashMap</td>
+<td>数组+链表+红黑树</td>
+<td>无序</td>
+<td>16</td>
+<td>2倍</td>
+<td>都不可以</td>
+<td>线程安全</td>
+</tr>
+</tbody></table>
+
     </div>
 
     
@@ -286,7 +552,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#javaSE"><span class="nav-number">1.</span> <span class="nav-text">javaSE</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#javaSE"><span class="nav-number">1.</span> <span class="nav-text">javaSE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">数据类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.1.</span> <span class="nav-text">隐式类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">强制类型转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.1.</span> <span class="nav-text">赋值运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.2.</span> <span class="nav-text">关系运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.3.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.4.</span> <span class="nav-text">位运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E8%BF%90%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.5.</span> <span class="nav-text">三运运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6"><span class="nav-number">1.4.</span> <span class="nav-text">访问修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E5%86%99%E3%80%81%E9%87%8D%E8%BD%BD"><span class="nav-number">1.5.</span> <span class="nav-text">方法的重写、重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java%E9%9B%86%E5%90%88"><span class="nav-number">1.6.</span> <span class="nav-text">java集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Collection%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.6.1.</span> <span class="nav-text">Collection接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Map%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.6.2.</span> <span class="nav-text">Map接口</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
