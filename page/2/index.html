@@ -306,7 +306,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-29 22:31:36" itemprop="dateModified" datetime="2022-06-29T22:31:36+08:00">2022-06-29</time>
+                <time title="修改时间：2022-07-01 19:35:19" itemprop="dateModified" datetime="2022-07-01T19:35:19+08:00">2022-07-01</time>
               </span>
 
           
@@ -669,60 +669,138 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><h4 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h4><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>表达式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>？</td>
+<td>b?</td>
+<td>表示有0或多个b</td>
+</tr>
+<tr>
+<td>+</td>
+<td>b+</td>
+<td>表示1或多个b</td>
+</tr>
+<tr>
+<td>*</td>
+<td>b*</td>
+<td>表示0或多个b</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>b{4}</td>
+<td>表示4个b</td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>b{4,}</td>
+<td>表示大于等于4个b</td>
+</tr>
+<tr>
+<td>{n,m}</td>
+<td>b{4,6}</td>
+<td>表示4到6个</td>
+</tr>
+</tbody></table>
+<h4 id="选择匹配符"><a href="#选择匹配符" class="headerlink" title="选择匹配符"></a>选择匹配符</h4><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>表达式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>|</td>
+<td>cat|dog</td>
+<td>dog或cat</td>
+</tr>
+</tbody></table>
+<h4 id="字符匹配符"><a href="#字符匹配符" class="headerlink" title="字符匹配符"></a>字符匹配符</h4><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>表达式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[]</td>
+<td>[efgn]</td>
+<td>e、f、g、n任意一个</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td>[^abc]</td>
+<td>除a、b、c任意一个</td>
+</tr>
+<tr>
+<td>-</td>
+<td>A-Z</td>
+<td>A到Z任意一个</td>
+</tr>
+<tr>
+<td>.</td>
+<td></td>
+<td>除“\n”任意一个</td>
+</tr>
+<tr>
+<td>\\d</td>
+<td>\\d</td>
+<td>相当于[0-9]</td>
+</tr>
+<tr>
+<td>\\D</td>
+<td>\\D</td>
+<td>相当于[ ^ 0-9]</td>
+</tr>
+<tr>
+<td>\\w</td>
+<td>\\w</td>
+<td>相当于[0-9a-zA-Z]</td>
+</tr>
+<tr>
+<td>\\W</td>
+<td>\\W</td>
+<td>相当于[ ^ 0-9a-zA-Z]</td>
+</tr>
+</tbody></table>
+<h4 id="定位符"><a href="#定位符" class="headerlink" title="定位符"></a>定位符</h4><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>表达式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>^</td>
+<td>^[0-9]</td>
+<td>以0~9任意一个开头</td>
+</tr>
+<tr>
+<td>$</td>
+<td>[0-9]$</td>
+<td>以0~9任意一个结尾</td>
+</tr>
+<tr>
+<td>\\b</td>
+<td>er\b</td>
+<td>边界匹配,匹配”never”中的”er”，但不匹配”verb”中的”er”</td>
+</tr>
+<tr>
+<td>\\B</td>
+<td>er\b</td>
+<td>非边界匹配</td>
+</tr>
+</tbody></table>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cygzsw/article/details/120135665?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522165667527116780366541625%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=165667527116780366541625&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-3-120135665-null-null.142^v30^pc_search_result_control_group,185^v2^control&utm_term=%E9%9F%A9%E9%A1%BA%E5%B9%B3%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8Fjava&spm=1018.2226.3001.4187">韩顺平正则表达式</a></p>
 
       
     </div>
@@ -870,7 +948,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共4.5k字</span>
+  <span class="post-count">博客全站共5.2k字</span>
 </div>
 
     <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
