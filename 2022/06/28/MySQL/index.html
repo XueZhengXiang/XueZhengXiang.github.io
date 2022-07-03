@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2022/06/28/MySQL/images/mysql逻辑架构图.png">
 <meta property="article:published_time" content="2022-06-28T07:04:04.621Z">
-<meta property="article:modified_time" content="2022-07-03T05:13:29.120Z">
+<meta property="article:modified_time" content="2022-07-03T14:03:01.736Z">
 <meta property="article:author" content="阿 星">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2022/06/28/MySQL/images/mysql逻辑架构图.png">
@@ -237,7 +237,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-03 13:13:29" itemprop="dateModified" datetime="2022-07-03T13:13:29+08:00">2022-07-03</time>
+                <time title="修改时间：2022-07-03 22:03:01" itemprop="dateModified" datetime="2022-07-03T22:03:01+08:00">2022-07-03</time>
               </span>
 
           
@@ -612,17 +612,471 @@
 <p>在以前的版本中，字典数据以元数据文件、非事务表等来存储。现在这些元数据文件被删除了。比如： .frm ， .par ， .trn ， .isl ， .db.opt 等都在MySQL8.0中不存在了。</p>
 <p>对比MyISAM的存储引擎， InnoDB写的处理效率差一些 ，并且会占用更多的磁盘空间以保存数据和索引。</p>
 <p>MyISAM只缓存索引，不缓存真实数据；InnoDB不仅缓存索引还要缓存真实数据， 对内存要求较 高 ，而且内存大小对性能有决定性的影响。</p>
-<h3 id="MyISAM-引擎：主要的非事务处理存储引擎"><a href="#MyISAM-引擎：主要的非事务处理存储引擎" class="headerlink" title="MyISAM 引擎：主要的非事务处理存储引擎"></a><strong>MyISAM</strong> <strong>引擎：主要的非事务处理存储引擎</strong></h3><p>MyISAM提供了大量的特性，包括全文索引、压缩、空间函数(GIS)等，但MyISAM 不支持事务、行级 </p>
-<p>锁、外键 ，有一个毫无疑问的缺陷就是 崩溃后无法安全恢复 。 </p>
-<p>5.5之前默认的存储引擎</p>
-<p>优势是访问的 速度快 ，对事务完整性没有要求或者以SELECT、INSERT为主的应用</p>
-<p>针对数据统计有额外的常数存储。故而 count(*) 的查询效率很高</p>
-<p>数据文件结构：（在《第02章_MySQL数据目录》章节已讲）</p>
+<h3 id="MyISAM-引擎：主要的非事务处理存储引擎"><a href="#MyISAM-引擎：主要的非事务处理存储引擎" class="headerlink" title="MyISAM 引擎：主要的非事务处理存储引擎"></a><strong>MyISAM</strong> <strong>引擎：主要的非事务处理存储引擎</strong></h3><p>MyISAM提供了大量的特性，包括全文索引、压缩、空间函数(GIS)等，但MyISAM 不支持事务、行级 锁、外键 ，有一个毫无疑问的缺陷就是 崩溃后无法安全恢复 。 5.5之前默认的存储引擎优势是访问的 速度快 ，对事务完整性没有要求或者以SELECT、INSERT为主的应用</p>
+<p>针对数据统计有额外的常数存储。故而 count(*) 的查询效率很高数据文件结构：</p>
 <p>表名.frm 存储表结构</p>
 <p>表名.MYD 存储数据 (MYData)</p>
 <p>表名.MYI 存储索引 (MYIndex)</p>
 <p>应用场景：只读应用或者以读为主的业务</p>
-<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h2 id="数据库设计规范"><a href="#数据库设计规范" class="headerlink" title="数据库设计规范"></a>数据库设计规范</h2><h2 id="数据库其他调优策略"><a href="#数据库其他调优策略" class="headerlink" title="数据库其他调优策略"></a>数据库其他调优策略</h2><h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h2 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h2><h2 id="数据库日志"><a href="#数据库日志" class="headerlink" title="数据库日志"></a>数据库日志</h2><h2 id="主从赋值"><a href="#主从赋值" class="headerlink" title="主从赋值"></a>主从赋值</h2><h2 id="数据库备份及恢复"><a href="#数据库备份及恢复" class="headerlink" title="数据库备份及恢复"></a>数据库备份及恢复</h2>
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>MyISAM</th>
+<th>InnoDB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>构造上的区别</td>
+<td>myisam在磁盘上存储上有三个文件.frm(存储表定义) .myd（存储表数据） .myi（存储表索引）；</td>
+<td>innodb磁盘上存储的是表空间数据文件和日志文件，innodb表大小只受限于操作系统大小。</td>
+</tr>
+<tr>
+<td>事务处理</td>
+<td>不提供事务</td>
+<td>提供事务</td>
+</tr>
+<tr>
+<td>SELECT、UPDATE、INSERT、DELET</td>
+<td>如果大量执行SELECT，MyISAM是好的选择</td>
+<td>如果需要有UPDATE、INSERT、DELETE较多情况，InnoDB是好的选择</td>
+</tr>
+<tr>
+<td>锁</td>
+<td>表锁（不支持<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_15127715/article/details/117613830?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522165683621016781683912795%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=165683621016781683912795&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-117613830-null-null.142%5Ev30%5Econtrol,185%5Ev2%5Econtrol&utm_term=%E9%AB%98%E5%B9%B6%E5%8F%91&spm=1018.2226.3001.4187">高并发</a>，以读为主）</td>
+<td>innodb支持行锁（共享锁，排它锁，意向锁），粒度更小</td>
+</tr>
+<tr>
+<td>索引</td>
+<td>聚簇索引、非聚簇索引</td>
+<td>非聚簇索引</td>
+</tr>
+</tbody></table>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><h3 id="索引概述"><a href="#索引概述" class="headerlink" title="索引概述"></a><strong>索引概述</strong></h3><p>MySQL官方对索引的定义为：<strong>索引（Index）是帮助MySQL高效获取数据的数据结构</strong>。</p>
+<p><strong>索引的本质：</strong>索引是数据结构。你可以简单理解为“排好序的快速查找数据结构”，满足特定查找算法。这些数据结构以某种方式指向数据， 这样就可以在这些数据结构的基础上实现 高级查找算法 。</p>
+<p><strong>索引的分类</strong> ：</p>
+<p>MySQL的索引包括普通索引、唯一性索引、全文索引、单列索引、多列索引和空间索引等。</p>
+<p>从 功能逻辑 上说，索引主要有 4 种，分别是普通索引、唯一索引、主键索引、全文索引。</p>
+<p>按照 物理实现方式 ，索引可以分为 2 种：聚簇索引和非聚簇索引。</p>
+<p>按照 作用字段个数 进行划分，分成单列索引和联合索引。</p>
+<p><strong>1.</strong> <strong>普通索引</strong></p>
+<p><strong>2.</strong> <strong>唯一性索引</strong></p>
+<p><strong>3.</strong> <strong>主键索引</strong></p>
+<p><strong>4.</strong> <strong>单列索引</strong></p>
+<p><strong>5.</strong> <strong>多列(组合、联合)索引</strong></p>
+<p><strong>6.</strong> <strong>全文索引</strong> </p>
+<p><strong>优点</strong> ：</p>
+<ol>
+<li>类似大学图书馆建书目索引，提高数据检索的效率，降低数据库的IO成本 ，这也是创建索引最主要的原因。 </li>
+<li>通过创建唯一索引，可以保证数据库表中每一行 数据的唯一性 。 </li>
+<li>在实现数据的参考完整性方面，可以 加速表和表之间的连接。 换句话说，对于有依赖关系的子表和父表联合查询时，可以提高查询速度。 </li>
+<li>在使用分组和排序子句进行数据查询时，可以显著减少查询中分组和排序的时 间 ，降低了CPU的消耗。</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>创建索引和维护索引要 耗费时间 ，并且随着数据量的增加，所耗费的时间也会增加。 </li>
+<li>索引需要占磁盘空间 ，除了数据表占数据空间之外，每一个索引还要占一定的物理空间， 存储在磁盘上 ，如果有大量的索引，索引文件就可能比数据文件更快达到最大文件尺寸。 </li>
+<li>虽然索引大大提高了查询速度，同时却会 降低更新表的速度 。当对表中的数据进行增加、删除和修改的时候，索引也要动态地维护，这样就降低了数据的维护速度。</li>
+</ol>
+<p>因此，选择使用索引时，需要综合考虑索引的优点和缺点。</p>
+<h3 id="常见索引概念"><a href="#常见索引概念" class="headerlink" title="常见索引概念"></a><strong>常见索引概念</strong></h3><p>索引按照物理实现方式，索引可以分为 2 种：聚簇（聚集）和非聚簇（非聚集）索引。我们也把非聚集</p>
+<p>索引称为二级索引或者辅助索引。</p>
+<h4 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a><strong>聚簇索引</strong></h4><p><strong>特点：</strong></p>
+<ol>
+<li>使用记录主键值的大小进行记录和页的排序，这包括三个方面的含义：</li>
+</ol>
+<ul>
+<li>页内 的记录是按照主键的大小顺序排成一个单向链表 。</li>
+<li>各个存放用户记录的页 也是根据页中用户记录的主键大小顺序排成一个 双向链表 。</li>
+<li>存放目录项记录的页 分为不同的层次，在同一层次中的页也是根据页中目录项记录的主键大小顺序排成一个 双向链表 。</li>
+</ul>
+<ol start="2">
+<li>B+树的 叶子节点 存储的是完整的用户记录。</li>
+</ol>
+<p>所谓完整的用户记录，就是指这个记录中存储了所有列的值（包括隐藏列）。</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>数据访问更快 ，因为聚簇索引将索引和数据保存在同一个B+树中，因此从聚簇索引中获取数据比非聚簇索引更快。</li>
+<li>聚簇索引对于主键的 <strong>排序查找</strong> 和 <strong>范围查找</strong> 速度非常快</li>
+<li>按照聚簇索引排列顺序，查询显示一定范围数据的时候，由于数据都是紧密相连，数据库不用从多个数据块中提取数据，所以 节省了大量的io操作 。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>插入速度严重依赖于插入顺序 ，按照主键的顺序插入是最快的方式，否则将会出现页分裂，严重影响性能。因此，对于InnoDB表，我们一般都会定义一个<strong>自增的ID列为主键</strong>。</li>
+<li>更新主键的代价很高 ，因为将会导致被更新的行移动。因此，对于InnoDB表，我们一般定义<strong>主键为不可更新。</strong></li>
+<li>二级索引访问需要两次索引查找 ，第一次找到主键值，第二次根据主键值找到行数据。</li>
+</ul>
+<h4 id="二级索引（辅助索引、非聚簇索引）"><a href="#二级索引（辅助索引、非聚簇索引）" class="headerlink" title="二级索引（辅助索引、非聚簇索引）"></a>二级索引（辅助索引、非聚簇索引）</h4><p>概念：<strong>回表</strong> 我们根据这个以c2列大小排序的B+树只能确定我们要查找记录的主键值，所以如果我们想根据c2列的值查找到完整的用户记录的话，仍然需要到 聚簇索引 中再查一遍，这个过程称为 回表 。也就是根据c2列的值查询一条完整的用户记录需要使用到 2 棵B+树！</p>
+<h4 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a><strong>联合索引</strong></h4><p>我们也可以同时以多个列的大小作为排序规则，也就是同时为多个列建立索引，比方说我们想让B+树按照 c2和c3列 的大小进行排序，这个包含两层含义：</p>
+<ul>
+<li>先把各个记录和页按照c2列进行排序。</li>
+<li>在记录的c2列相同的情况下，采用c3列进行排序。</li>
+</ul>
+<p>注意一点，以c2和c3列的大小为排序规则建立的B+树称为 联合索引 ，本质上也是一个二级索引。它的意思与分别为c2和c3列分别建立索引的表述是不同的，不同点如下：</p>
+<ul>
+<li>建立 联合索引 只会建立如上图一样的1棵B+树。</li>
+<li>为c2和c3列分别建立索引会分别以c2和c3列的大小为排序规则建立2棵B+树。</li>
+</ul>
+<h3 id="各种数据结构做索引比较"><a href="#各种数据结构做索引比较" class="headerlink" title="各种数据结构做索引比较"></a>各种数据结构做索引比较</h3><table>
+<thead>
+<tr>
+<th>数据结构名称</th>
+<th>查询速度</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B+树</td>
+<td>O(logN)</td>
+<td>InnoDB和MyISAM默认存储数据结构</td>
+</tr>
+<tr>
+<td>B树</td>
+<td>速度相对于B+树不稳定</td>
+<td>相对于B+树只能通过中序遍历(非叶子结点)、同样磁盘页存储子树少</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>O(1)</td>
+<td>不能做范围查询、会有hash冲突、不能排序、不支持联合索引最左侧原则</td>
+</tr>
+<tr>
+<td>AVL(平衡二叉树)</td>
+<td>O(logN)</td>
+<td>树的深度较高</td>
+</tr>
+</tbody></table>
+<h2 id="索引优化与查询优化"><a href="#索引优化与查询优化" class="headerlink" title="索引优化与查询优化"></a><strong>索引优化与查询优化</strong></h2><h3 id="慢查询日志分析工具：mysqldumpslow"><a href="#慢查询日志分析工具：mysqldumpslow" class="headerlink" title="慢查询日志分析工具：mysqldumpslow"></a>慢查询日志分析工具：mysqldumpslow</h3><p>在生产环境中，如果要手工分析日志，查找、分析SQL，显然是个体力活，MySQL提供了日志分析工具mysqldumpslow 。</p>
+<p>查看mysqldumpslow的帮助信息mysqldumpslow 命令的具体参数如下：</p>
+<p>-a: 不将数字抽象成N，字符串抽象成S </p>
+<p>-s: 是表示按照何种方式排序：</p>
+<p>c: 访问次数</p>
+<p>l: 锁定时间</p>
+<p>r: 返回记录</p>
+<p><strong>t:</strong> <strong>查询时间</strong></p>
+<p>al:平均锁定时间</p>
+<p>ar:平均返回记录数</p>
+<p>at:平均查询时间 （默认方式）</p>
+<p>ac:平均查询次数</p>
+<p>-t: 即为返回前面多少条的数据；</p>
+<p>6 rows in set (2.39 sec) </p>
+<p>show status like ‘slow_queries’; </p>
+<p>mysqldumpslow –help</p>
+<h3 id="分析查询语句：EXPLAIN"><a href="#分析查询语句：EXPLAIN" class="headerlink" title="分析查询语句：EXPLAIN"></a>分析查询语句：EXPLAIN</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> s1;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>在一个大的查询语句中每个SELECT关键字都对应一个 唯一的id</td>
+</tr>
+<tr>
+<td>select_type</td>
+<td>SELECT关键字对应的那个查询的类型</td>
+</tr>
+<tr>
+<td>table</td>
+<td>表名</td>
+</tr>
+<tr>
+<td>partitions</td>
+<td>匹配的分区信息</td>
+</tr>
+<tr>
+<td>type<strong>☆</strong></td>
+<td>针对单表的访问方法</td>
+</tr>
+<tr>
+<td>possible_keys</td>
+<td>可能用到的索引</td>
+</tr>
+<tr>
+<td>key</td>
+<td>实际上使用的索引</td>
+</tr>
+<tr>
+<td>key_len<strong>☆</strong></td>
+<td>实际使用到的索引长度</td>
+</tr>
+<tr>
+<td>ref</td>
+<td>当使用索引列等值查询时，与索引列进行等值匹配的对象信息</td>
+</tr>
+<tr>
+<td>rows <strong>☆</strong></td>
+<td>预估的需要读取的记录条数</td>
+</tr>
+<tr>
+<td>filtered</td>
+<td>某个表经过搜索条件过滤后剩余记录条数的百分比</td>
+</tr>
+<tr>
+<td>Extra <strong>☆</strong></td>
+<td>一些额外的信息</td>
+</tr>
+</tbody></table>
+<p><strong>id:</strong></p>
+<ul>
+<li><strong>id如果相同，可以认为是一组，从上往下顺序执行</strong></li>
+<li><strong>在所有组中，id值越大，优先级越高，越先执行</strong></li>
+<li><strong>关注点：id号每个号码，表示一趟独立的查询, 一个sql的查询趟数越少越好</strong></li>
+</ul>
+<p><strong>type <strong>☆</strong>:</strong></p>
+<p><strong>结果值从最好到最坏依次是：</strong> <strong>system &gt; const &gt; eq_ref &gt; ref</strong> <strong>&gt; fulltext &gt; ref_or_null &gt; index_merge &gt;</strong> </p>
+<p><strong>unique_subquery &gt; index_subquery &gt;</strong> <strong>range &gt; index &gt; ALL</strong> 其中比较重要的几个提取出来。SQL性能优化的目标：至少要达到 <strong>range</strong> <strong>级别，要求是</strong> <strong>ref</strong> <strong>级别</strong>，最好是<strong>consts</strong>级别。（阿里巴巴开发手册要求）</p>
+<h2 id="数据库设计规范"><a href="#数据库设计规范" class="headerlink" title="数据库设计规范"></a>数据库设计规范</h2><h3 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h3><p>确保表中每一列数据的原子性，不可再分！</p>
+<h3 id="第二范式"><a href="#第二范式" class="headerlink" title="第二范式"></a>第二范式</h3><p>在满足第一范式的基础上，确保列数据要跟主键关联，不能出现部分依赖。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">成绩表 （学号，课程号，成绩）关系中，（学号，课程号）可以决定成绩，但是学号不能决定成绩，课</span><br><span class="line">程号也不能决定成绩，所以“（学号，课程号）→成绩”就是 完全依赖关系 。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="第三范式"><a href="#第三范式" class="headerlink" title="第三范式"></a>第三范式</h3><p>再满足第二范式的基础上，保证每一列数据都要跟主键直接关联，不能出现传递依赖。</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>字段类型</th>
+<th>是否为主键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INT</td>
+<td>是</td>
+<td>商品主键id （主键）</td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>INT</td>
+<td>否</td>
+<td>商品类别id</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>VARCHAR(30)</td>
+<td>否</td>
+<td>商品类别名称</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>VARCHAR(30)</td>
+<td>否</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>price</td>
+<td>DECIMAL(10,2)</td>
+<td>否</td>
+<td>商品价格</td>
+</tr>
+</tbody></table>
+<p><strong>商品类别名称依赖于商品类别编号，不符合第三范式</strong>。</p>
+<p><strong>商品类别表</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>字段类型</th>
+<th>是否为主键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INT</td>
+<td>是</td>
+<td>商品主键id （主键）</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>VARCHAR(30)</td>
+<td>否</td>
+<td>商品类别名称</td>
+</tr>
+</tbody></table>
+<p><strong>商品表</strong></p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>字段类型</th>
+<th>是否为主键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INT</td>
+<td>是</td>
+<td>商品主键id （主键）</td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>VARCHAR(30)</td>
+<td>否</td>
+<td>商品类别id</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>VARCHAR(30)</td>
+<td>否</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>price</td>
+<td>DECIMAL(10,2)</td>
+<td>否</td>
+<td>商品价格</td>
+</tr>
+</tbody></table>
+<h2 id="INNODB"><a href="#INNODB" class="headerlink" title="INNODB"></a>INNODB</h2><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏写</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>序列化读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>READ UNCOMMITED</td>
+<td>NO</td>
+<td>YES</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>READ COMMITED</td>
+<td>NO</td>
+<td>NO</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>REPEATABLE READ</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>SERIALIZEABLE</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+</tbody></table>
+<h3 id="ACID属性"><a href="#ACID属性" class="headerlink" title="ACID属性"></a><strong>ACID属性</strong></h3><p>  事务是由一组SQL语句组成的逻辑处理单元，事务具有4属性，通常称为事务的ACID属性。</p>
+<ul>
+<li>原子性（Actomicity）：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行。</li>
+<li>一致性（Consistent）：在事务开始和完成时，数据都必须保持一致状态。这意味着所有相关的数据规则都必须应用于事务的修改，以操持完整性；事务结束时，所有的内部数据结构（如B树索引或双向链表）也都必须是正确的。</li>
+<li>隔离性（Isolation）：数据库系统提供一定的隔离机制，保证事务在不受外部并发操作影响的“独立”环境执行。这意味着事务处理过程中的中间状态对外部是不可见的，反之亦然。</li>
+<li>持久性（Durable）：事务完成之后，它对于数据的修改是永久性的，即使出现系统故障也能够保持。</li>
+</ul>
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h3 id="对数据的操作类型划分"><a href="#对数据的操作类型划分" class="headerlink" title="对数据的操作类型划分"></a>对数据的操作类型划分</h3><table>
+<thead>
+<tr>
+<th></th>
+<th align="center">表现</th>
+<th>位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>读锁&#x2F;共享锁(S)</td>
+<td align="center">针对同一份数据，多个事务的读操作可以同时进行而不会互相影响，相互不阻塞的。</td>
+<td>对于InnoDB，可以加在表上，也可以加在行上</td>
+</tr>
+<tr>
+<td>写锁&#x2F;排他锁(X)</td>
+<td align="center">当前写操作没有完成前，它会阻断其他写锁和读锁。</td>
+<td>对于InnoDB，可以加在表上，也可以加在行上</td>
+</tr>
+</tbody></table>
+<h3 id="对数据操作粒度划分"><a href="#对数据操作粒度划分" class="headerlink" title="对数据操作粒度划分"></a>对数据操作粒度划分</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th align="center">表现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>表锁</td>
+<td align="center">开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。</td>
+</tr>
+<tr>
+<td>InnoDB行锁（1记录锁、2间隙锁、3、临建锁、4插入意向锁）</td>
+<td align="center">开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低，并发度也最高。</td>
+</tr>
+<tr>
+<td>页面锁</td>
+<td align="center">开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般</td>
+</tr>
+</tbody></table>
+<h3 id="对锁的态度"><a href="#对锁的态度" class="headerlink" title="对锁的态度"></a>对锁的态度</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th align="center">表现</th>
+<th>位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>悲观锁</td>
+<td align="center">共享资源每次只给个线程使用，其他线程阻塞，用完再把资源转让给其他线程</td>
+<td>写多读少</td>
+</tr>
+<tr>
+<td>乐观锁</td>
+<td align="center">不用每次都对数据上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据</td>
+<td>读多写少</td>
+</tr>
+</tbody></table>
+<h3 id="按加锁的方式划分"><a href="#按加锁的方式划分" class="headerlink" title="按加锁的方式划分"></a>按加锁的方式划分</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th align="center">表现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>隐式锁</td>
+<td align="center">MySQL 的 InnoDB 存储引擎采用两段锁协议，会根据隔离级别在需要的时候自动加锁，并且所有的锁都是在同一时刻被释放，这被称为隐式锁定</td>
+</tr>
+<tr>
+<td>显示锁</td>
+<td align="center">用特定语句进行显示锁定SELECT … LOCK In SHARE MODE;(共享锁)SELECT … FOR UPDATE;(排他锁)事务完成提交自动释放锁</td>
+</tr>
+</tbody></table>
+<p><strong>两段锁协议</strong>：加锁和解锁分为两个阶段进行，可串行化调度是指通过并发控制，使得并发执行的事务结果与某个串行执行的事务结果相同，串行执行的事务互不干扰，不会出现并发一致性问题。</p>
+<h2 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>MVCC （Multiversion Concurrency Control），多版本并发控制。顾名思义，MVCC 是通过数据行的多个版本管理来实现数据库的 并发控制 。这项技术使得在InnoDB的事务隔离级别下执行 一致性读 操作有了保证。换言之，就是为了查询一些正在被另一个事务更新的行，并且可以看到它们被更新之前的值，这样在做查询的时候就不用等待另一个事务释放锁。</p>
+<h2 id="数据库日志"><a href="#数据库日志" class="headerlink" title="数据库日志"></a>数据库日志</h2><ul>
+<li><strong>慢查询日志：</strong>记录所有执行时间超过long_query_time的所有查询，方便我们对查询进行优化。</li>
+<li><strong>通用查询日志：</strong>记录所有连接的起始时间和终止时间，以及连接发送给数据库服务器的所有指令，对我们复原操作的实际场景、发现问题，甚至是对数据库操作的审计都有很大的帮助。</li>
+<li><strong>错误日志：</strong>记录MySQL服务的启动、运行或停止MySQL服务时出现的问题，方便我们了解服务器的状态，从而对服务器进行维护。</li>
+<li><strong>二进制日志：</strong>记录所有更改数据的语句，可以用于主从服务器之间的数据同步，以及服务器遇到故障时数据的无损失恢复。</li>
+<li><strong>中继日志：</strong>用于主从服务器架构中，从服务器用来存放主服务器二进制日志内容的一个中间文件。从服务器通过读取中继日志的内容，来同步主服务器上的操作。</li>
+<li><strong>数据定义语句日志：</strong>记录数据定义语句执行的元数据操作。</li>
+</ul>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><h3 id="由来"><a href="#由来" class="headerlink" title="由来"></a>由来</h3><p>如果我们的目的在于提升数据库高并发访问的效率，那么首先考虑的是如何  <strong>1、优化SQL和索引</strong> ，这种方式简单有效；其次才是采用 <strong>2、缓存的策略</strong> ，比如使用 Redis将热点数据保存在内存数据库中，提升读取的效率；最后才是对数据库采用 <strong>3、主从架构</strong> ，进行读写分离。</p>
+<h3 id="主从复制的作用"><a href="#主从复制的作用" class="headerlink" title="主从复制的作用"></a>主从复制的作用</h3><ul>
+<li><p><strong>读写分离。</strong></p>
+</li>
+<li><p><strong>数据备份。</strong></p>
+</li>
+<li><p><strong>是具有高可用性。</strong></p>
+<h3 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h3></li>
+</ul>
+<h2 id="数据库备份及恢复"><a href="#数据库备份及恢复" class="headerlink" title="数据库备份及恢复"></a>数据库备份及恢复</h2><p><strong>物理备份</strong>：备份数据文件，转储数据库物理文件到某一目录。物理备份恢复速度比较快，但占用空间比较大，MySQL中可以xtrabackup 工具来进行物理备份。</p>
+<p><strong>逻辑备份</strong>：对数据库对象利用工具进行导出工作，汇总入备份文件内。逻辑备份恢复速度慢，但占用空间小，更灵活。MySQL 中常用的逻辑备份工具为 mysqldump 。逻辑备份就是 备份sql语句 ，在恢复的时候执行备份的sql语句实现数据库数据的重现。 </p>
+
     </div>
 
     
@@ -746,7 +1200,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E5%88%9D%E7%BA%A7%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">MySQL初级篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">SQL分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%ACSELECT%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.</span> <span class="nav-text">基本SELECT语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%97%E7%9A%84%E5%88%AB%E5%90%8D"><span class="nav-number">1.2.1.</span> <span class="nav-text">列的别名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E8%A1%8C"><span class="nav-number">1.2.2.</span> <span class="nav-text">去除重复行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.1.</span> <span class="nav-text">算术运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.2.</span> <span class="nav-text">比较运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.3.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.4.</span> <span class="nav-text">位运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">1.3.5.</span> <span class="nav-text">运算符的优先级</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5"><span class="nav-number">2.</span> <span class="nav-text">排序与分页</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="nav-number">2.1.</span> <span class="nav-text">排序规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%88%97%E6%8E%92%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">单列排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%88%97%E6%8E%92%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">多列排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-number">2.4.</span> <span class="nav-text">分页</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.</span> <span class="nav-text">多表查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.</span> <span class="nav-text">子查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E8%A1%8C%E5%87%BD%E6%95%B0%E3%80%81%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">单行函数、聚合函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">5.1.</span> <span class="nav-text">聚合函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WHERE%E5%92%8CHAVING%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">5.2.</span> <span class="nav-text">WHERE和HAVING的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">SQL执行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F"><span class="nav-number">7.</span> <span class="nav-text">约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE"><span class="nav-number">8.</span> <span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.1.</span> <span class="nav-text">常见的数据库对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E3%80%81%E5%87%BD%E6%95%B0"><span class="nav-number">9.</span> <span class="nav-text">存储过程、函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">10.</span> <span class="nav-text">触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-number">10.1.</span> <span class="nav-text">触发器的创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E9%AB%98%E7%BA%A7%E7%AF%87"><span class="nav-number">11.</span> <span class="nav-text">MySQL高级篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">11.1.</span> <span class="nav-text">MySQL逻辑架构图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">12.</span> <span class="nav-text">存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB-%E5%BC%95%E6%93%8E%EF%BC%9A%E5%85%B7%E5%A4%87%E5%A4%96%E9%94%AE%E6%94%AF%E6%8C%81%E5%8A%9F%E8%83%BD%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">12.1.</span> <span class="nav-text">InnoDB 引擎：具备外键支持功能的事务存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM-%E5%BC%95%E6%93%8E%EF%BC%9A%E4%B8%BB%E8%A6%81%E7%9A%84%E9%9D%9E%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">12.2.</span> <span class="nav-text">MyISAM 引擎：主要的非事务处理存储引擎</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-number">13.</span> <span class="nav-text">索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="nav-number">14.</span> <span class="nav-text">数据库设计规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B6%E4%BB%96%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5"><span class="nav-number">15.</span> <span class="nav-text">数据库其他调优策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">16.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">17.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVCC"><span class="nav-number">18.</span> <span class="nav-text">MVCC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%A5%E5%BF%97"><span class="nav-number">19.</span> <span class="nav-text">数据库日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E8%B5%8B%E5%80%BC"><span class="nav-number">20.</span> <span class="nav-text">主从赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%8F%8A%E6%81%A2%E5%A4%8D"><span class="nav-number">21.</span> <span class="nav-text">数据库备份及恢复</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E5%88%9D%E7%BA%A7%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">MySQL初级篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">SQL分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%ACSELECT%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.</span> <span class="nav-text">基本SELECT语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%97%E7%9A%84%E5%88%AB%E5%90%8D"><span class="nav-number">1.2.1.</span> <span class="nav-text">列的别名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%BB%E9%99%A4%E9%87%8D%E5%A4%8D%E8%A1%8C"><span class="nav-number">1.2.2.</span> <span class="nav-text">去除重复行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.1.</span> <span class="nav-text">算术运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.2.</span> <span class="nav-text">比较运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.3.</span> <span class="nav-text">逻辑运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.4.</span> <span class="nav-text">位运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">1.3.5.</span> <span class="nav-text">运算符的优先级</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5"><span class="nav-number">2.</span> <span class="nav-text">排序与分页</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="nav-number">2.1.</span> <span class="nav-text">排序规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%88%97%E6%8E%92%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">单列排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%88%97%E6%8E%92%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">多列排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-number">2.4.</span> <span class="nav-text">分页</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.</span> <span class="nav-text">多表查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.</span> <span class="nav-text">子查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E8%A1%8C%E5%87%BD%E6%95%B0%E3%80%81%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">单行函数、聚合函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">5.1.</span> <span class="nav-text">聚合函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WHERE%E5%92%8CHAVING%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">5.2.</span> <span class="nav-text">WHERE和HAVING的对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">SQL执行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F"><span class="nav-number">7.</span> <span class="nav-text">约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE"><span class="nav-number">8.</span> <span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.1.</span> <span class="nav-text">常见的数据库对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E3%80%81%E5%87%BD%E6%95%B0"><span class="nav-number">9.</span> <span class="nav-text">存储过程、函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">10.</span> <span class="nav-text">触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-number">10.1.</span> <span class="nav-text">触发器的创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E9%AB%98%E7%BA%A7%E7%AF%87"><span class="nav-number">11.</span> <span class="nav-text">MySQL高级篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">11.1.</span> <span class="nav-text">MySQL逻辑架构图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">12.</span> <span class="nav-text">存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB-%E5%BC%95%E6%93%8E%EF%BC%9A%E5%85%B7%E5%A4%87%E5%A4%96%E9%94%AE%E6%94%AF%E6%8C%81%E5%8A%9F%E8%83%BD%E7%9A%84%E4%BA%8B%E5%8A%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">12.1.</span> <span class="nav-text">InnoDB 引擎：具备外键支持功能的事务存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM-%E5%BC%95%E6%93%8E%EF%BC%9A%E4%B8%BB%E8%A6%81%E7%9A%84%E9%9D%9E%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">12.2.</span> <span class="nav-text">MyISAM 引擎：主要的非事务处理存储引擎</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-number">13.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E6%A6%82%E8%BF%B0"><span class="nav-number">13.1.</span> <span class="nav-text">索引概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%B4%A2%E5%BC%95%E6%A6%82%E5%BF%B5"><span class="nav-number">13.2.</span> <span class="nav-text">常见索引概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95"><span class="nav-number">13.2.1.</span> <span class="nav-text">聚簇索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95%EF%BC%88%E8%BE%85%E5%8A%A9%E7%B4%A2%E5%BC%95%E3%80%81%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%EF%BC%89"><span class="nav-number">13.2.2.</span> <span class="nav-text">二级索引（辅助索引、非聚簇索引）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95"><span class="nav-number">13.2.3.</span> <span class="nav-text">联合索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%81%9A%E7%B4%A2%E5%BC%95%E6%AF%94%E8%BE%83"><span class="nav-number">13.3.</span> <span class="nav-text">各种数据结构做索引比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96%E4%B8%8E%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">14.</span> <span class="nav-text">索引优化与查询优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%EF%BC%9Amysqldumpslow"><span class="nav-number">14.1.</span> <span class="nav-text">慢查询日志分析工具：mysqldumpslow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%EF%BC%9AEXPLAIN"><span class="nav-number">14.2.</span> <span class="nav-text">分析查询语句：EXPLAIN</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="nav-number">15.</span> <span class="nav-text">数据库设计规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%8C%83%E5%BC%8F"><span class="nav-number">15.1.</span> <span class="nav-text">第一范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%8C%83%E5%BC%8F"><span class="nav-number">15.2.</span> <span class="nav-text">第二范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8F"><span class="nav-number">15.3.</span> <span class="nav-text">第三范式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#INNODB"><span class="nav-number">16.</span> <span class="nav-text">INNODB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">16.1.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ACID%E5%B1%9E%E6%80%A7"><span class="nav-number">16.2.</span> <span class="nav-text">ACID属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">17.</span> <span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E6%8D%AE%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B1%BB%E5%9E%8B%E5%88%92%E5%88%86"><span class="nav-number">17.1.</span> <span class="nav-text">对数据的操作类型划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E7%B2%92%E5%BA%A6%E5%88%92%E5%88%86"><span class="nav-number">17.2.</span> <span class="nav-text">对数据操作粒度划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E9%94%81%E7%9A%84%E6%80%81%E5%BA%A6"><span class="nav-number">17.3.</span> <span class="nav-text">对锁的态度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%89%E5%8A%A0%E9%94%81%E7%9A%84%E6%96%B9%E5%BC%8F%E5%88%92%E5%88%86"><span class="nav-number">17.4.</span> <span class="nav-text">按加锁的方式划分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVCC"><span class="nav-number">18.</span> <span class="nav-text">MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">18.1.</span> <span class="nav-text">概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%A5%E5%BF%97"><span class="nav-number">19.</span> <span class="nav-text">数据库日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">20.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B1%E6%9D%A5"><span class="nav-number">20.1.</span> <span class="nav-text">由来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">20.2.</span> <span class="nav-text">主从复制的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86"><span class="nav-number">20.3.</span> <span class="nav-text">主从复制原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%8F%8A%E6%81%A2%E5%A4%8D"><span class="nav-number">21.</span> <span class="nav-text">数据库备份及恢复</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -822,7 +1276,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共21.6k字</span>
+  <span class="post-count">博客全站共25.8k字</span>
 </div>
 
     <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
