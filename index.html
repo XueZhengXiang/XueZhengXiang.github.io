@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-03 09:30:28" itemprop="dateModified" datetime="2022-07-03T09:30:28+08:00">2022-07-03</time>
+                <time title="修改时间：2022-07-03 09:36:17" itemprop="dateModified" datetime="2022-07-03T09:36:17+08:00">2022-07-03</time>
               </span>
 
           
@@ -339,13 +339,13 @@
 <li>调用非java代码，需要与java外面的环境进行交互。</li>
 <li>与操作系统的交互。</li>
 </ul>
-<h3 id="java垃圾回收机制"><a href="#java垃圾回收机制" class="headerlink" title="java垃圾回收机制"></a>java垃圾回收机制</h3><p><strong>优点</strong></p>
+<h2 id="java垃圾回收机制"><a href="#java垃圾回收机制" class="headerlink" title="java垃圾回收机制"></a>java垃圾回收机制</h2><p><strong>优点</strong></p>
 <ol>
 <li>自动内存管理，无需开发人员手动参与内存的分配与回收，这样降低内存泄漏和内存溢出的风险。</li>
 <li>没有垃圾回收器，java 也会和 cpp 一样，各种悬垂指针，野指针，泄露问题让你头疼不已。</li>
 <li>自动内存管理机制，将程序员从繁重的内存管理中释放出来，可以更专心地专注于业务开发。</li>
 </ol>
-<h4 id="垃圾回收过程"><a href="#垃圾回收过程" class="headerlink" title="垃圾回收过程"></a><strong>垃圾回收过程</strong></h4><h5 id="标记阶段"><a href="#标记阶段" class="headerlink" title="标记阶段"></a>标记阶段</h5><p><strong>引用计数算法</strong>：会有循环引用关系问题。</p>
+<h3 id="垃圾回收过程"><a href="#垃圾回收过程" class="headerlink" title="垃圾回收过程"></a><strong>垃圾回收过程</strong></h3><h4 id="标记阶段"><a href="#标记阶段" class="headerlink" title="标记阶段"></a>标记阶段</h4><p><strong>引用计数算法</strong>：会有循环引用关系问题。</p>
 <p><strong>可达性分析算法</strong></p>
 <p><strong>基本思路</strong>：</p>
 <ul>
@@ -363,7 +363,7 @@
 <li>Java 虚拟机内部的引用。基本数据类型对应的 Class 对象，一些常驻的异常对象（如：Nu11PointerException、outofMemoryError），系统类加载器。</li>
 <li>反映 java 虚拟机内部情况的 JMXBean、JVMTI 中注册的回调、本地代码缓存等。</li>
 </ul>
-<h5 id="清除阶段"><a href="#清除阶段" class="headerlink" title="清除阶段"></a>清除阶段</h5><p>当成功区分出内存中存活对象和死亡对象后，GC 接下来的任务就是执行垃圾回收，释放掉无用对象所占用的内存空间，以便有足够的可用内存空间为新对象分配内存。</p>
+<h3 id="清除阶段"><a href="#清除阶段" class="headerlink" title="清除阶段"></a>清除阶段</h3><p>当成功区分出内存中存活对象和死亡对象后，GC 接下来的任务就是执行垃圾回收，释放掉无用对象所占用的内存空间，以便有足够的可用内存空间为新对象分配内存。</p>
 <p>目前在 JVM 中比较常见的三种垃圾收集算法：</p>
 <ul>
 <li>标记一清除算法（Mark-Sweep） </li>
@@ -398,14 +398,14 @@
 <td>是</td>
 </tr>
 </tbody></table>
-<h3 id="垃圾回收概念"><a href="#垃圾回收概念" class="headerlink" title="垃圾回收概念"></a>垃圾回收概念</h3><h4 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a><strong>内存溢出</strong></h4><p>内存溢出相对于内存泄漏来说，尽管更容易被理解，但是同样的，内存溢出也是引发程序崩溃的罪魁祸首之一。由于 GC 一直在发展，所有一般情况下，除非应用程序占用的内存增长速度非常快，造成垃圾回收已经跟不上内存消耗的速度，否则不太容易出现 ooM 的情况。</p>
+<h2 id="垃圾回收概念"><a href="#垃圾回收概念" class="headerlink" title="垃圾回收概念"></a>垃圾回收概念</h2><h3 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a><strong>内存溢出</strong></h3><p>内存溢出相对于内存泄漏来说，尽管更容易被理解，但是同样的，内存溢出也是引发程序崩溃的罪魁祸首之一。由于 GC 一直在发展，所有一般情况下，除非应用程序占用的内存增长速度非常快，造成垃圾回收已经跟不上内存消耗的速度，否则不太容易出现 ooM 的情况。</p>
 <p>大多数情况下，GC 会进行各种年龄段的垃圾回收，实在不行了就放大招，来一次独占式的 Fu11GC 操作，这时候会回收大量的内存，供应用程序继续使用。javadoc 中对 outofMemoryError 的解释是，没有空闲内存，并且垃圾收集器也无法提供更多内存。</p>
 <p>首先说没有空闲内存的情况：说明 Java 虚拟机的堆内存不够。原因有二：</p>
 <ol>
 <li>Java 虚拟机的堆内存设置不够。比如：可能存在内存泄漏问题；也很有可能就是堆的大小不合理，比如我们要处理比较可观的数据量，但是没有显式指定 JVM 堆大小或者指定数值偏小。我们可以通过参数-Xms 、-Xmx 来调整。</li>
 <li>代码中创建了大量大对象，并且长时间不能被垃圾收集器收集（存在被引用）对于老版本的 oracle JDK，因为永久代的大小是有限的，并且 JVM 对永久代垃圾回收（如，常量池回收、卸载不再需要的类型）非常不积极，所以当我们不断添加新类型的时候，永久代出现 OutOfMemoryError 也非常多见，尤其是在运行时存在大量动态类型生成的场合；类似 intern 字符串缓存占用太多空间，也会导致 OOM 问题。对应的异常信息，会标记出来和永久代相关：“java.lang.OutOfMemoryError:PermGen space”。随着元数据区的引入，方法区内存已经不再那么窘迫，所以相应的 ooM 有所改观，出现 ooM，异常信息则变了：“java.lang.OutofMemoryError:Metaspace”。直接内存不足，也会导致 OOM。这里面隐含着一层意思是，在抛出 OutofMemoryError 之前，通常垃圾收集器会被触发，尽其所能去清理出空间。例如：在引用机制分析中，涉及到 JVM 会去尝试回收软引用指向的对象等。 在java.nio.BIts.reserveMemory（）方法中，我们能清楚的看到，System.gc（）会被调用，以清理空间。当然，也不是在任何情况下垃圾收集器都会被触发的比如，我们去分配一个超大对象，类似一个超大数组超过堆的最大值，JVM 可以判断出垃圾收集并不能解决这个问题，所以直接抛出 OutofMemoryError。</li>
 </ol>
-<h4 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a><strong>内存泄漏</strong></h4><p>也称作“存储渗漏”。严格来说，只有对象不会再被程序用到了，但是 GC 又不能回收他们的情况，才叫内存泄漏。但实际情况很多时候一些不太好的实践（或疏忽）会导致对象的生命周期变得很长甚至导致 00M，也可以叫做宽泛意义上的“内存泄漏”。尽管内存泄漏并不会立刻引起程序崩溃，但是一旦发生内存泄漏，程序中的可用内存就会被逐步蚕食，直至耗尽所有内存，最终出现 outofMemory 异常，导致程序崩溃。</p>
+<h3 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a><strong>内存泄漏</strong></h3><p>也称作“存储渗漏”。严格来说，只有对象不会再被程序用到了，但是 GC 又不能回收他们的情况，才叫内存泄漏。但实际情况很多时候一些不太好的实践（或疏忽）会导致对象的生命周期变得很长甚至导致 00M，也可以叫做宽泛意义上的“内存泄漏”。尽管内存泄漏并不会立刻引起程序崩溃，但是一旦发生内存泄漏，程序中的可用内存就会被逐步蚕食，直至耗尽所有内存，最终出现 outofMemory 异常，导致程序崩溃。</p>
 <p>注意，这里的存储空间并不是指物理内存，而是指虚拟内存大小，这个虚拟内存大小取决于磁盘交换区设定的大小。买房子：80 平的房子，但是有 10 平是公摊的面积，我们是无法使用这 10 平的空间，这就是所谓的内存泄漏。Java 使用可达性分析算法，最上面的数据不可达，就是需要被回收的。后期有一些对象不用了，按道理应该断开引用，但是存在一些链没有断开，从而导致没有办法被回收。</p>
 <p><strong>举例</strong></p>
 <ul>
@@ -416,24 +416,24 @@
 <li>一些提供 close 的资源未关闭导致内存泄漏</li>
 </ul>
 <p>数据库连接（dataSourse.getConnection() ），网络连接（socket）和 io 连接必须手动 close，否则是不能被回收的。</p>
-<h4 id="Stop-The-World"><a href="#Stop-The-World" class="headerlink" title="Stop The World"></a><strong>Stop The World</strong></h4><p>stop-the-world，简称 STw，指的是 GC 事件发生过程中，会产生应用程序的停顿。停顿产生时整个应用程序线程都会被暂停，没有任何响应，有点像卡死的感觉，这个停顿称为 STW。可达性分析算法中枚举根节点（GC Roots）会导致所有 Java 执行线程停顿。</p>
+<h3 id="Stop-The-World"><a href="#Stop-The-World" class="headerlink" title="Stop The World"></a><strong>Stop The World</strong></h3><p>stop-the-world，简称 STw，指的是 GC 事件发生过程中，会产生应用程序的停顿。停顿产生时整个应用程序线程都会被暂停，没有任何响应，有点像卡死的感觉，这个停顿称为 STW。可达性分析算法中枚举根节点（GC Roots）会导致所有 Java 执行线程停顿。</p>
 <ul>
 <li>分析工作必须在一个能确保一致性的快照中进行</li>
 <li>一致性指整个分析期间整个执行系统看起来像被冻结在某个时间点上</li>
 <li>如果出现分析过程中对象引用关系还在不断变化，则分析结果的准确性无法保证 被 STW 中断的应用程序线程会在完成 GC 之后恢复，频繁中断会让用户感觉像是网速不快造成电影卡带一样，所以我们需要减少 STw 的发生。STW 事件和采用哪款 GC 无关所有的 GC 都有这个事件。哪怕是 G1 也不能完全避免 Stop-the-world 情况发生，只能说垃圾回收器越来越优秀，回收效率越来越高，尽可能地缩短了暂停时间。STW 是 JVM 在后台自动发起和自动完成的。在用户不可见的情况下，把用户正常的工作线程全部停掉。开发中不要用 system.gc() 会导致 stop-the-world 的发生。</li>
 </ul>
-<h4 id="垃圾回收的并行与并发"><a href="#垃圾回收的并行与并发" class="headerlink" title="垃圾回收的并行与并发"></a><strong>垃圾回收的并行与并发</strong></h4><p><strong>并发</strong></p>
+<h3 id="垃圾回收的并行与并发"><a href="#垃圾回收的并行与并发" class="headerlink" title="垃圾回收的并行与并发"></a><strong>垃圾回收的并行与并发</strong></h3><p><strong>并发</strong></p>
 <p>在操作系统中，是指一个时间段中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理器上运行。并发不是真正意义上的“同时进行”，只是 CPU 把一个时间段划分成几个时间片段（时间区间），然后在这几个时间区间之间来回切换，由于 CPU 处理的速度非常快，只要时间间隔处理得当，即可让用户感觉是多个应用程序同时在进行。</p>
 <p><strong>并行</strong></p>
 <p>当系统有一个以上 CPU 时，当一个 CPU 执行一个进程时，另一个 CPU 可以执行另一个进程，两个进程互不抢占 CPU 资源，可以同时进行，我们称之为并行（Paralle1）。其实决定并行的因素不是 CPU 的数量，而是 CPU 的核心数量，比如一个 CPU 多个核也可以并行。</p>
 <p>适合科学计算，后台处理等弱交互场景</p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><ul>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
 <li>强引用（StrongReference）：最传统的“引用”的定义，是指在程序代码之中普遍存在的引用赋值，即类似“object obj&#x3D;new Object（）”这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回收掉被引用的对象。 </li>
 <li>软引用（SoftReference）：在系统将要发生内存溢出之前，将会把这些对象列入回收范围之中进行第二次回收。如果这次回收后还没有足够的内存，才会抛出内存流出异常。</li>
 <li>弱引用（WeakReference）：被弱引用关联的对象只能生存到下一次垃圾收集之前。当垃圾收集器工作时，无论内存空间是否足够，都会回收掉被弱引用关联的对象。</li>
 <li>虚引用（PhantomReference）：一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来获得一个对象的实例。为一个对象设置虚引用关联的唯一目的就是能在这个对象被收集器回收时收到一个系统通知。</li>
 </ul>
-<h3 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h3><table>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><table>
 <thead>
 <tr>
 <th>垃圾收集器</th>
@@ -501,7 +501,7 @@
 <td>面向服务端应用</td>
 </tr>
 </tbody></table>
-<h4 id="CMS-回收器：低延迟"><a href="#CMS-回收器：低延迟" class="headerlink" title="CMS 回收器：低延迟"></a><strong>CMS</strong> <strong>回收器：低延迟</strong></h4><p>在 JDK1.5 时期，Hotspot 推出了一款在强交互应用中几乎可认为有划时代意义的垃圾收集器：cMS（Concurrent-Mark-Sweep）收集器，这款收集器是 HotSpot 虚拟机中第一款真正意义上的并发收集器，<strong>它第一次实现了让垃圾收集线程与用户线程同时工作</strong>。</p>
+<h3 id="CMS-回收器：低延迟"><a href="#CMS-回收器：低延迟" class="headerlink" title="CMS 回收器：低延迟"></a><strong>CMS</strong> <strong>回收器：低延迟</strong></h3><p>在 JDK1.5 时期，Hotspot 推出了一款在强交互应用中几乎可认为有划时代意义的垃圾收集器：cMS（Concurrent-Mark-Sweep）收集器，这款收集器是 HotSpot 虚拟机中第一款真正意义上的并发收集器，<strong>它第一次实现了让垃圾收集线程与用户线程同时工作</strong>。</p>
 <p>CMS 收集器的关注点是尽可能缩短垃圾收集时用户线程的停顿时间。停顿时间越短（低延迟）就越适合与用户交互的程序，良好的响应速度能提升用户体验。目前很大一部分的 Java 应用集中在互联网站或者 B&#x2F;S 系统的服务端上，这类应用尤其重视服务的响应速度，希望系统停顿时间最短，以给用户带来较好的体验。CMS 收集器就非常符合这类应用的需求。CMS 的垃圾收集算法采用标记-清除算法，并且也会”stop-the-world”不幸的是，CMS 作为老年代的收集器，却无法与 JDK1.4.0 中已经存在的新生代收集器 Parallel Scavenge 配合工作，所以在 JDK1.5 中使用 CMS 来收集老年代的时候，新生代只能选择 ParNew 或者 Serial 收集器中的一个。在 G1 出现之前，CMS 使用还是非常广泛的。一直到今天，仍然有很多系统使用CMS GC。</p>
 <p>CMS 整个过程比之前的收集器要复杂，整个过程分为 4 个主要阶段，即初始标记阶段、并发标记阶段、重新标记阶段和并发清除阶段。(涉及 <strong>STW</strong> 的阶段主要是：初始标记 和 重新标记) </p>
 <ol>
@@ -541,7 +541,7 @@
 <li>如果你想要最大化应用程序的吞吐量，请选 Parallel GC； </li>
 <li>如果你想要最小化 GC 的中断或停顿时间，请选 CMs GC。</li>
 </ul>
-<h4 id="G1垃圾回收器：区域化分代式"><a href="#G1垃圾回收器：区域化分代式" class="headerlink" title="G1垃圾回收器：区域化分代式"></a><strong>G1垃圾回收器</strong>：区域化分代式</h4><p>G1GC 的垃圾回收过程主要包括如下三个环节：</p>
+<h3 id="G1垃圾回收器：区域化分代式"><a href="#G1垃圾回收器：区域化分代式" class="headerlink" title="G1垃圾回收器：区域化分代式"></a><strong>G1垃圾回收器</strong>：区域化分代式</h3><p>G1GC 的垃圾回收过程主要包括如下三个环节：</p>
 <ul>
 <li>年轻代 GC（Young GC） </li>
 <li>老年代并发标记过程（Concurrent Marking） </li>
