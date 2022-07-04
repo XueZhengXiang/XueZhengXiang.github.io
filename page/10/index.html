@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/Java%E9%AB%98%E7%BA%A7/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/JavaWeb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -211,7 +211,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/06/28/Java%E9%AB%98%E7%BA%A7/" class="post-title-link" itemprop="url">Java高级</a>
+            <a href="/2022/06/28/JavaWeb/" class="post-title-link" itemprop="url">JavaWeb</a>
         </h2>
 
         <div class="post-meta">
@@ -226,14 +226,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-06-28 11:31:21" itemprop="dateCreated datePublished" datetime="2022-06-28T11:31:21+08:00">2022-06-28</time>
+              <time title="创建时间：2022-06-28 11:31:51" itemprop="dateCreated datePublished" datetime="2022-06-28T11:31:51+08:00">2022-06-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-02 10:36:50" itemprop="dateModified" datetime="2022-07-02T10:36:50+08:00">2022-07-02</time>
+                <time title="修改时间：2022-06-29 18:42:24" itemprop="dateModified" datetime="2022-06-29T18:42:24+08:00">2022-06-29</time>
               </span>
 
           
@@ -247,170 +247,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="java高级篇"><a href="#java高级篇" class="headerlink" title="java高级篇"></a>java高级篇</h3><h3 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46594796/article/details/118082268">Java反射</a></p>
-<h3 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ningmengshuxiawo/article/details/119102854">IO流</a></p>
-<h3 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44491927/article/details/108560692">JUC多线程</a></p>
-<h3 id="java锁"><a href="#java锁" class="headerlink" title="java锁"></a>java锁</h3><table>
-<thead>
-<tr>
-<th>锁名称</th>
-<th>应用</th>
-<th>表现</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>悲观锁</td>
-<td>synchronized、vector、hastable</td>
-<td>读少写多</td>
-</tr>
-<tr>
-<td>乐观锁</td>
-<td>CAS</td>
-<td>读多写少</td>
-</tr>
-<tr>
-<td>自旋锁</td>
-<td>CAS</td>
-<td>避免线程切换的开销，耗费处理器资源</td>
-</tr>
-<tr>
-<td>可重入锁</td>
-<td>synchornized、Reentrantlock、Lock</td>
-<td>避免死锁</td>
-</tr>
-<tr>
-<td>读写锁</td>
-<td>ReentrantReadWriterlock</td>
-<td>分读锁、写锁</td>
-</tr>
-<tr>
-<td>公平锁</td>
-<td>Reentrantlock(true)</td>
-<td>按照FIFO的原则从队列中拿到线程，然后占有锁</td>
-</tr>
-<tr>
-<td>非公平锁</td>
-<td>Reentrantlock(false)、synchornized</td>
-<td>性能高于公平锁，会导致线程饥饿</td>
-</tr>
-<tr>
-<td>独占锁</td>
-<td>synchornized、vector、ReentrantReadWriterlock中写锁</td>
-<td>是一种设计思想</td>
-</tr>
-<tr>
-<td>共享锁</td>
-<td>ReentrantReadWriterlock中读锁</td>
-<td>是一种设计思想</td>
-</tr>
-<tr>
-<td>偏向锁</td>
-<td>锁优化</td>
-<td>偏向于第一个获得它的线程</td>
-</tr>
-<tr>
-<td>轻量级锁</td>
-<td>锁优化</td>
-<td>在无竞争的情况下使用CAS操作去消除同步使用的互斥量</td>
-</tr>
-<tr>
-<td>重量级锁</td>
-<td>synchornized</td>
-<td>通过对象内部的一个监视器锁（monitor）来实现，monitor本身依赖Mutex Lock</td>
-</tr>
-<tr>
-<td>分段锁</td>
-<td>concurrentHashMap</td>
-<td>是一个 Segment 数组， Segment 通过继承 ReentrantLock 来进行加锁</td>
-</tr>
-<tr>
-<td>互斥锁</td>
-<td>synchornized</td>
-<td>表示并发执行的多个线程，在同一时间内只允许一个线程访问 共享数据</td>
-</tr>
-<tr>
-<td>同步锁</td>
-<td>synchornized</td>
-<td>表示并发执行的多个线程，在同一时间内只允许一个线程访问 共享数据</td>
-</tr>
-<tr>
-<td>死锁</td>
-<td>相互请求对方资源</td>
-<td>A线程有对象锁1想要对象锁2才能执行处于等待状态，B线程想要锁1，二者死等</td>
-</tr>
-<tr>
-<td>锁粗化</td>
-<td>锁优化</td>
-<td>把加锁的范围扩展到整个操作序列的外部，加锁和解锁频率下降减少性能消耗</td>
-</tr>
-<tr>
-<td>锁消除</td>
-<td>锁优化</td>
-<td>利用逃逸分析技术，把锁干掉</td>
-</tr>
-</tbody></table>
-<h4 id="synchronized升级"><a href="#synchronized升级" class="headerlink" title="synchronized升级"></a>synchronized升级</h4><p> <strong>无锁态</strong><br>偏向锁位、锁标志位的值为：0 01，此时对象是没有做任何同步限制的，为什么会有这个状态在下面的偏向锁中会跟大家介绍。</p>
-<p> <strong>偏向锁</strong><br>偏向锁位、锁标志位的值为：1 01。</p>
-<p>有研究表明，其实在大部分场景都不会发生锁资源竞争，并且锁资源往往都是由一个线程获得的。如果这种情况下，同一个线程获取这个锁都需要进行一系列操作，比如说CAS自旋，那这个操作很明显是多余的。偏向锁就解决了这个问题。其核心思想就是：一个线程获取到了锁，那么锁就会进入偏向模式，当同一个线程再次请求该锁的时候，无需做任何同步，直接进行同步区域执行。这样就省去了大量有关锁申请的操作。所以，对于没有锁竞争的场合，偏向锁有很好的优化效果。</p>
-<p>偏向锁加锁过程：</p>
-<ol>
-<li>访问Mark Word中偏向锁的标识是否设置成1，锁标志位是否为01，确认为可偏向状态。</li>
-<li>如果为可偏向状态，则判断线程ID是否指向当前线程，如果是，进入步骤5，否则进入步骤3。</li>
-<li>如果线程ID并未指向当前线程，则通过CAS操作竞争锁。如果竞争成功，则将Mark Word中线程ID设置为当前线程ID，然后执行5；如果竞争失败，执行4。</li>
-<li>如果CAS获取偏向锁失败，则表示有竞争。当到达全局安全点（safepoint）时获得偏向锁的线程被挂起，偏向锁升级为轻量级锁，然后被阻塞在安全点的线程继续往下执行同步代码。</li>
-<li>执行同步代码。</li>
-</ol>
-<p>偏向锁的撤销在上述第四步骤中有提到。偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程不会主动去释放偏向锁。偏向锁的撤销，需要等待全局安全点（在这个时间点上没有字节码正在执行），它会首先暂停拥有偏向锁的线程，判断锁对象是否处于被锁定状态，撤销偏向锁后恢复到未锁定（标志位为“01”）或轻量级锁（标志位为“00”）的状态。</p>
-<p>偏向锁的适用场景：</p>
-<p>始终只有一个线程在执行同步块，在它没有执行完释放锁之前，没有其它线程去执行同步块，在锁无竞争的情况下使用，一旦有了竞争就升级为轻量级锁，升级为轻量级锁的时候需要撤销偏向锁。在有锁的竞争时，偏向锁会多做很多额外操作，尤其是撤销偏向锁的时候会导致进入安全点，安全点会导致stw，导致性能下降，这种情况下应当禁用。所以一般JVM并不是一开始就开启偏向锁的，而是有一定的延迟，这也就是为什么会有无锁态的原因。可以使用-XX:BiasedLockingStartupDelay&#x3D;0来关闭偏向锁的启动延迟, 也可以使用-XX:-UseBiasedLocking&#x3D;false来关闭偏向锁。偏向锁撤销导致的stw</p>
-<p>通过加偏向锁的方式可以看到，对象中记录了获取到对象锁的线程ID，这就意味如果短时间同一个线程再次访问这个加锁的同步代码或方法时，该线程只需要对对象头Mark Word中去判断一下是否有偏向锁指向它的ID，有的话就继续执行逻辑了，没有的话，会CAS尝试获得锁，如果持有锁的线程在全局安全点检查时，不需要再使用该锁了则获取成功，程序继续执行，反之则获取锁失败，撤销偏向状态，升级为轻量级锁，即自旋锁。</p>
-<p> <strong>轻量级锁（自旋锁）</strong></p>
-<p>当有另外一个线程竞争获取这个锁时，由于该锁已经是偏向锁，当发现对象头 Mark Word 中的线程 ID 不是自己的线程 ID，销偏向锁状态，将锁对象markWord中62位修改成指向自己线程栈中Lock Record的指针（CAS抢）执行在用户态，消耗CPU的资源（自旋锁不适合锁定时间长的场景、等待线程特别多的场景），此时锁标志位为：00。</p>
-<p>自旋策略<br>JVM 提供了一种自旋锁，可以通过自旋方式不断尝试获取锁，从而避免线程被挂起阻塞。这是基于大多数情况下，线程持有锁的时间都不会太长，毕竟线程被挂起阻塞可能会得不偿失。</p>
-<p>自适应自旋锁</p>
-<p>JDK 1.6引入了更加聪明的自旋锁，叫做自适应自旋锁。他的自旋次数是会变的，我用大白话来讲一下，就是线程如果上次自旋成功了，那么这次自旋的次数会更加多，因为虚拟机认为既然上次成功了，那么这次自旋也很有可能会再次成功。反之，如果某个锁很少有自旋成功，那么以后的自旋的次数会减少甚至省略掉自旋过程，以免浪费处理器资源。 大家现在觉得没这么low了吧。</p>
-<p>轻量级锁的加锁过程：</p>
-<p>在代码进入同步块的时候，如果同步对象锁状态为无锁状态（锁标志位为“01”状态，是否为偏向锁为“0”），虚拟机首先将在当前线程的栈帧中建立一个名为锁记录（Lock Record）的空间，用于存储锁对象目前的Mark Word的拷贝，官方称之为 Displaced Mark Word。<br>拷贝对象头中的Mark Word复制到锁记录中；<br>拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word中的62位更新为指向Lock Record的指针，并将Lock record里的owner指针指向object mark word。如果更新成功，则执行步骤4，否则执行步骤5。<br>如果这个更新动作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位设置为“00”，即表示此对象处于轻量级锁定状态。<br>如果这个更新操作失败了，虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行。此时为了提高获取锁的效率，线程会不断地循环去获取锁, 这个循环是有次数限制的, 如果在循环结束之前CAS操作成功, 那么线程就获取到锁, 如果循环结束依然获取不到锁, 则获取锁失败, 对象的MarkWord中的记录会被修改为指向互斥量（重量级锁）的指针，锁标志的状态值变为10，线程被挂起，后面来的线程也会直接被挂起。</p>
-<p>轻量级锁的释放</p>
-<p>释放锁线程视角：由轻量锁切换到重量锁，是发生在轻量锁释放锁的期间，之前在获取锁的时候它拷贝了锁对象头的markword，在释放锁的时候如果它发现在它持有锁的期间有其他线程来尝试获取锁了，并且该线程对markword做了修改，两者比对发现不一致，则切换到重量锁。因为重量级锁被修改了，所有display mark word和原来的markword不一样了。<br>怎么补救，就是进入mutex前，compare一下obj的markword状态。确认该markword是否被其他线程持有。此时如果线程已经释放了markword，那么通过CAS后就可以直接进入线程，无需进入mutex，就这个作用。</p>
-<p>尝试获取锁线程视角：如果线程尝试获取锁的时候，轻量锁正被其他线程占有，那么它就会修改markword，修改重量级锁，表示该进入重量锁了。</p>
-<p>从 JDK1.7 开始，自旋锁默认启用，自旋次数由 JVM 设置决定，这里我不建议设置的重试次数过多，因为 CAS 重试操作意味着长时间地占用 CPU。自旋锁重试之后如果抢锁依然失败，同步锁就会升级至重量级锁，锁标志位改为 10。在这个状态下，未抢到锁的线程都会进入 </p>
-<p> Monitor，之后会被阻塞在 _WaitSet 队列中。</p>
-<p><strong>重量级锁</strong></p>
-<p>此时锁标志位为：10。前面我们提到的markWord，若是重量锁，对象头中还会存在一个监视器对象，也就是Monitor对象。这个Monitor对象就是实现synchronized的一个关键。</p>
-<p>在Java虚拟机(HotSpot)中，Monitor对象其实就是ObjectMonitor对象，这个对象是一个C++对象，定义在虚拟机源码中。</p>
-<p>ObjectMonitor有比较多的属性，但是比较重要的属性有四个：</p>
-<ul>
-<li>_count：计数器。用来记录获取锁的次数。该属性主要用来实现重入锁机制。</li>
-<li>_owner：记录着当前锁对象的持有者线程。</li>
-<li>_WaitSet：队列。当一个线程调用了wait方法后，它会释放锁资源，进入WaitSet队列等待被唤醒。</li>
-<li>_EntryList：队列。里面存放着所有申请该锁对象的线程。</li>
-</ul>
-<p>所以一个线程获取锁对象的流程如下：</p>
-<ol>
-<li>判断锁对象的锁标志位是重量级锁，于是想要获取Monitor对象锁。</li>
-<li>如果Monitor中的count属性是0，说明当前锁可用，于是把 _owner 属性设置为本线程，然后把 _count 属性+1。这就成功地完成了锁的  获取。</li>
-<li>如果Monitor中的count属性不为0，再检查 _owner 属性，如果该属性指向了本线程，说明可以重入锁，于是把 _count 属性再加实现锁的重入。</li>
-<li>如果 _owner 属性指向了其他线程，那么该线程进入 _EntryList 队列中等待锁资源的释放。</li>
-<li>如果线程在持有锁的过程中调用了wait()方法，那么线程释放锁对象，然后进入 _WaitSet 队列中等待被唤醒。</li>
-</ol>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>synchronized的执行过程： </p>
-<ol>
-<li>检测Mark Word里面是不是当前线程的ID，如果是，表示当前线程处于偏向锁 </li>
-<li>如果不是，则使用CAS将当前线程的ID替换Mard Word，如果成功则表示当前线程获得偏向锁，置偏向标志位1 </li>
-<li>如果失败，则说明发生竞争，撤销偏向锁，进而升级为轻量级锁。 </li>
-<li>当前线程使用CAS将对象头的Mark Word替换为锁记录指针，如果成功，当前线程获得锁 </li>
-<li>如果失败，表示其他线程竞争锁，当前线程便尝试使用自旋来获取锁。 </li>
-<li>如果自旋成功则依然处于轻量级状态。 </li>
-<li>如果自旋失败，则升级为重量级锁。</li>
-</ol>
-<p>上面几种锁都是JVM自己内部实现，当我们执行synchronized同步块的时候jvm会根据启用的锁和当前线程的争用情况，决定如何执行同步操作；</p>
-<p>在所有的锁都启用的情况下线程进入临界区时会先去获取偏向锁，如果已经存在偏向锁了，则会尝试获取轻量级锁，启用自旋锁，如果自旋也没有获取到锁，则使用重量级锁，没有获取到锁的线程阻塞挂起，直到持有锁的线程执行完同步块唤醒他们；</p>
-<p>synchronized锁升级实际上是把本来的悲观锁变成了 在一定条件下 使用无锁(同样线程获取相同资源的偏向锁)，以及使用乐观(自旋锁 cas)和一定条件下悲观(重量级锁)的形式。</p>
-<p>偏向锁:适用于单线程适用锁的情况，如果线程争用激烈，那么应该禁用偏向锁。</p>
-<p>轻量级锁：适用于竞争较不激烈的情况(这和乐观锁的使用范围类似)</p>
-<p>重量级锁：适用于竞争激烈的情况</p>
-
+          <h3 id="javaWeb"><a href="#javaWeb" class="headerlink" title="javaWeb"></a>javaWeb</h3>
       
     </div>
 
