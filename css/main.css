@@ -1175,7 +1175,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #8b57ff;
+  background: #e416ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2678,7 +2678,7 @@ ul.breadcrumb li + li:last-child {
   }
 }
 body {
-  background: url("http://rggalfxts.hn-bkt.clouddn.com/2022/8/11/background.png");
+  background: url("rggalfxts.hn-bkt.clouddn.com/2022/8/11/background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
