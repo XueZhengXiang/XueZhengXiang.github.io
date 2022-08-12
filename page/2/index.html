@@ -211,6 +211,13 @@
 
               <time title="创建时间：2022-07-05 20:29:23" itemprop="dateCreated datePublished" datetime="2022-07-05T20:29:23+08:00">2022-07-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-12 14:27:45" itemprop="dateModified" datetime="2022-08-12T14:27:45+08:00">2022-08-12</time>
+              </span>
 
           
 
@@ -223,7 +230,121 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h2 id="OSI七层"><a href="#OSI七层" class="headerlink" title="OSI七层"></a>OSI七层</h2><h3 id="OSI七层模型从上到下依次为："><a href="#OSI七层模型从上到下依次为：" class="headerlink" title="OSI七层模型从上到下依次为："></a>OSI七层模型从上到下依次为：</h3><p>应用层：为应用程序提供网络服务。</p>
+<p>表示层：数据格式转换、数据压缩和数据加密。</p>
+<p>会话层：建立、断开和维护通信链接。</p>
+<p>传输层：为上层协议提供端到端的可靠传输。</p>
+<p>网络层：寻址和路由。</p>
+<p>数据链路层：定义通过通信媒介互连的设备之间传输的规范。</p>
+<p>物理层：利用物理传输介质为数据链路层提供物理连接。</p>
+<p>TCP五层模型相比OSI七层模型，将OSI的应用层、表示层和会话层合为一层：应用层，其他不变。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/XueZhengXiang/photo/img/%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B.png"></p>
+<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p><img src="https://cdn.jsdelivr.net/gh/XueZhengXiang/photo/img/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E6%A0%87.jpg"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/XueZhengXiang/photo/img/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B1.jpg"></p>
+<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p><img src="https://cdn.jsdelivr.net/gh/XueZhengXiang/photo/img/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png"></p>
+<h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><h3 id="TCP-协议如何保证可靠传输"><a href="#TCP-协议如何保证可靠传输" class="headerlink" title="TCP 协议如何保证可靠传输"></a>TCP 协议如何保证可靠传输</h3><ul>
+<li>停止等待：每发完一个分组就停止发送，等待对方确认。在收到确认后再发下一个分组。</li>
+<li>超时重传：当TCP发出一个段后，它启动一个定时器，等待目的端确认收到这个报文段。如果不能及时收到一个确认，将重发这个报文段；</li>
+<li>流量控制：TCP连接的每一方都有固定大小的缓冲空间。TCP的接收端只允许另一端发送接收端缓冲区所能接纳的数据，这可以防止较快主机致使较慢主机的缓冲区溢出，这就是流量控制。TCP使用的流量控制协议是可变大小的滑动窗口协议。</li>
+<li>拥塞控制： 当网络拥塞时，可能会造成网络的拥堵，甚至网络瘫痪，TCP会减少数据的发送。</li>
+<li>数据包校验：TCP 将保持它首部和数据的检验和，这是一个端到端的检验和。目的是检测数据在传输过程中的任何变化，若校验出包有错，则丢弃报文段并且不给出响应，这时TCP发送数据端超时后会重发数据；</li>
+<li>对失序数据包重排序：既然TCP报文段作为IP数据报来传输，而IP数据报的到达可能会失序，因此TCP报文段的到达也可能会失序。TCP给发送的每一个包进行编号，接收方对数据包进行排序，把有序数据传送给应用层。</li>
+<li>应答机制：当TCP收到发自TCP连接另一端的数据，它将发送一个确认。这个确认不是立即发送，通常将推迟几分之一秒；<br>丢弃重复数据：TCP 的接收端会丢弃重复的数据。</li>
+</ul>
+<h3 id="TCP拥塞控制？"><a href="#TCP拥塞控制？" class="headerlink" title="TCP拥塞控制？"></a>TCP拥塞控制？</h3><p><strong>拥塞控制是防止过多的数据注入网络，使得网络中的路由器或者链路过载。流量控制是点对点的通信量控制，而拥塞控制是全局的网络流量整体性的控制。发送双方都有一个拥塞窗口（cwnd）。</strong></p>
+<ul>
+<li>慢开始：最开始发送方的拥塞窗口为1，由小到大递增。每经过一个传输轮次，拥塞窗口cwnd加倍（乘2）。当cwnd超过慢开始门限，则使用拥塞避免算法，避免cwnd增长过长。</li>
+<li>拥塞避免（算法）：当cwnd超过慢开始门限，每经过一个往返时间RTT，cwnd就增长1。在慢开始和拥塞避免过程中，一旦发现网络拥塞，就把慢开始门限设置为当前值的一半，并且重新设置cwnd为1，重新慢启动。</li>
+<li>快重传：接收方每收到一个失序的报文段后就立即发出重复确认，发送方只要收到3个重复确认就立即重传。</li>
+<li>快恢复：当发送方连续收到三个重复确认，就将慢开始门限减半，将当前的窗口设置为慢开始门限，并采用拥塞避免算法。（采用快恢复算法时，慢开始只在建立连接和网络超时时才使用）</li>
+</ul>
+<h2 id="HTTP与HTTPS"><a href="#HTTP与HTTPS" class="headerlink" title="HTTP与HTTPS"></a>HTTP与HTTPS</h2><p><strong>HTTP是一个基于TCP&#x2F;IP通信协议来传递数据的协议。HTTP协议工作于客户端-服务端架构之上，实现可靠性的传输文字、图片、音频、视频等超文本数据的规范，格式简称为“超文本传输协议”。Http协议属于应用层，用户访问的第一层就是http。</strong></p>
+<p>特点：</p>
+<p>①简单快速：客户端向服务器发送请求时，只需传送请求方法和路径即可。<br>②灵活：HTTP允许传输任意类型的数据对象。<br>③无连接：限制每次连接只处理一个请求。服务器处理完客户请求，并收到客户应答后，即断开连接。<br>④无状态：协议对于事务处理没有记忆能力。<br>⑤支持B&#x2F;S及C&#x2F;S模式。</p>
+<h2 id="Http和Https的区别？"><a href="#Http和Https的区别？" class="headerlink" title="Http和Https的区别？"></a>Http和Https的区别？</h2><p>端口不同：Http是80，Https443<br>安全性：http是超文本传输协议，信息是明文传输，https则是通过SSL加密处理的传输协议，更加安全。<br>是否付费：https需要拿到CA证书，需要付费<br>连接方式：http和https使用的是完全不同的连接方式（HTTP的连接很简单，是无状态的；HTTPS 协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。）</p>
+<p>HTTPS传输过程中使用密钥加密，安全性更高。但是收费，而且多了一层SSL延时也会有所提高。</p>
+<h3 id="HTTPS工作原理"><a href="#HTTPS工作原理" class="headerlink" title="HTTPS工作原理"></a>HTTPS工作原理</h3><ul>
+<li>首先HTTP请求服务端生成证书，客户端对证书的有效期、合法性、域名是否与请求的域名一致、证书的公钥（RSA加密）等进行校验。</li>
+<li>客户端如果校验通过后，就根据证书的公钥的有效， 生成随机数，随机数使用公钥进行加密（RSA加密）。</li>
+<li>消息体产生的后，对它的摘要进行MD5（或者SHA1）算法加密，此时就得到了RSA签名。</li>
+<li>发送给服务端，此时只有服务端（RSA私钥）能解密。</li>
+<li>解密得到的随机数，再用AES加密，作为密钥（此时的密钥只有客户端和服务端知道）。</li>
+</ul>
+<h3 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h3><p><strong>加密算法：对信息进行编码和解码的技术，编码是把原来可读信息（又称明文）译成代码形式（又称密文），其逆过程就是解码（解密）。</strong></p>
+<p>加密技术的要点是加密算法，加密算法可以分为三类：</p>
+<ol>
+<li><strong>对称加密，如 AES</strong><br>基本原理：将明文分成 N 个组，然后使用密钥对各个组进行加密，形成各自的密文，最后把所有的分组密文进行合并，形成最终的密文。<br>优点：算法公开、计算量小、加密速度快、加密效率高<br>缺点：双方都使用同样密钥，安全性得不到保证</li>
+<li><strong>非对称加密，如 RSA</strong><br>基本原理：同时生成两把密钥：私钥和公钥，私钥隐秘保存，公钥可以下发给信任客户端<br>私钥加密，持有私钥或公钥才可以解密<br>公钥加密，持有私钥才可解密<br>优点：安全，难以破解<br>缺点：算法比较耗时</li>
+<li><strong>不可逆加密，如 MD5，SHA</strong><br>基本原理：加密过程中不需要使用密钥，输入明文后由系统直接经过加密算法处理成密文，这种加密后的数据是无法被解密的，无法根据密文推算出明文。</li>
+</ol>
+<h3 id="一次完整的HTTP请求所经历几个步骤"><a href="#一次完整的HTTP请求所经历几个步骤" class="headerlink" title="一次完整的HTTP请求所经历几个步骤?"></a>一次完整的HTTP请求所经历几个步骤?</h3><p><strong>HTTP协议采用请求&#x2F;响应模型。客户端向服务器发送一个请求报文，请求报文包含请求方法、URL、协议版本、请求头部和请求数据。服务器以一个状态行作为响应，响应内容包括协议版本、成功或者错误的代码、服务器信息、响应头部和响应数据。</strong></p>
+<p><strong>Web浏览器与Web服务器之间将完成下列7个步骤：</strong></p>
+<ol>
+<li><p>建立TCP连接，三次握手。</p>
+</li>
+<li><p>Web浏览器向Web服务器发送请求行。</p>
+</li>
+<li><p>Web浏览器发送请求头，浏览器发送其请求命令之后，还要以头信息的形式向Web服务器发送一些别的信息，之后浏览器发送了一空白行来通知服务器，它已经结束了该头信息的发送。</p>
+</li>
+<li><p>Web服务器应答：客户机向服务器发出请求后，服务器会客户机回送应答， HTTP&#x2F;1.1 200 OK ，应答的第一部分是协议的版本号和应答状态码。</p>
+</li>
+<li><p>Web服务器发送应答头：正如客户端会随同请求发送关于自身的信息一样，服务器也会随同应答向用户发送关于它自己的数据及被请求的文档。</p>
+</li>
+<li><p>Web服务器向浏览器发送数据：Web服务器向浏览器发送头信息后，它会发送一个空白行来表示头信息的发送到此为结束，接着，它就以Content-Type应答头信息所描述的格式发送用户所请求的实际数据。</p>
+</li>
+<li><p>Web服务器关闭TCP连接。</p>
+</li>
+</ol>
+<h3 id="什么是http的请求体？"><a href="#什么是http的请求体？" class="headerlink" title="什么是http的请求体？"></a>什么是http的请求体？</h3><h4 id="HTTP请求体"><a href="#HTTP请求体" class="headerlink" title="HTTP请求体"></a>HTTP请求体</h4><p><strong>请求行 、请求头、请求数据组成的。</strong></p>
+<h4 id="http的响应报文"><a href="#http的响应报文" class="headerlink" title="http的响应报文"></a>http的响应报文</h4><p> <strong>状态行、响应首部字段、响应内容实体</strong></p>
+<h3 id="输入网址到获取页面的过程？"><a href="#输入网址到获取页面的过程？" class="headerlink" title="输入网址到获取页面的过程？"></a>输入网址到获取页面的过程？</h3><p>浏览器搜索自身的DNS缓存、搜索操作系统的DNS缓存、读取本地的Host文件和向本地DNS服务器进行查询等。<br>对于向本地DNS服务器进行查询，如果要查询的域名包含在本地配置区域资源中，则返回解析结果给客户机，完成域名解析(此解析具有权威性)；如果要查询的域名不由本地DNS服务器区域解析，但该服务器已缓存了此网址映射关系，则调用这个IP地址映射，完成域名解析（此解析不具有权威性）。如果本地域名服务器并未缓存该网址映射关系，那么将根据其设置发起递归查询或者迭代查询；<br>浏览器获得域名对应的IP地址以后，浏览器向服务器请求建立链接，发起三次握手；<br>TCP&#x2F;IP链接建立起来后，浏览器向服务器发送HTTP请求；<br>服务器接收到这个请求，并根据路径参数映射到特定的请求处理器进行处理，并将处理结果及相应的视图返回给浏览器；<br>浏览器解析并渲染视图，若遇到对js文件、css文件及图片等静态资源的引用，则重复上述步骤并向服务器请求这些资源；<br>浏览器根据其请求到的资源、数据渲染页面，最终向用户呈现一个完整的页面。</p>
+<h3 id="http版本的对比"><a href="#http版本的对比" class="headerlink" title="http版本的对比"></a>http版本的对比</h3><h4 id="HTTP1-0版本的特性："><a href="#HTTP1-0版本的特性：" class="headerlink" title="HTTP1.0版本的特性："></a>HTTP1.0版本的特性：</h4><p><strong>早先1.0的HTTP版本，是一种无状态、无连接的应用层协议。（短连接）</strong><br>HTTP1.0规定浏览器和服务器保持短暂的连接，浏览器的每次请求都需要与服务器建立一个TCP连接，服务器处理完成后立即断开TCP连接（无连接），服务器不跟踪每个客户端也不记录过去的请求（无状态）。</p>
+<p><strong>HTTP1.1版本新特性（长连接）</strong>：<br>默认持久连接节省通信量，只要客户端服务端任意一端没有明确提出断开TCP连接，就一直保持连接，可以发送多次HTTP请求管线化，客户端可以同时发出多个HTTP请求，而不用一个个等待响应断点续传原理</p>
+<h4 id="HTTP2-0版本的特性："><a href="#HTTP2-0版本的特性：" class="headerlink" title="HTTP2.0版本的特性："></a>HTTP2.0版本的特性：</h4><ol>
+<li>二进制分帧（采用二进制格式的编码将其封装）</li>
+<li>首部压缩（设置了专门的首部压缩设计的HPACK算法。）</li>
+<li>流量控制（设置了接收某个数据流的多少字节一些流量控制）</li>
+<li>多路复用（可以在共享TCP链接的基础上同时发送请求和响应）</li>
+<li>请求优先级（可以通过优化这些帧的交错和传输顺序进一步优化性能）</li>
+<li>服务器推送（就是服务器可以对一个客户端请求发送多个响应。服务器向客户端推送资源无需客户端明确的请求。（重大更新）</li>
+</ol>
+<h4 id="常用HTTP状态码是怎么分类的，有哪些常见的状态码？"><a href="#常用HTTP状态码是怎么分类的，有哪些常见的状态码？" class="headerlink" title="常用HTTP状态码是怎么分类的，有哪些常见的状态码？"></a>常用HTTP状态码是怎么分类的，有哪些常见的状态码？</h4><p>HTTP状态码表示客户端HTTP请求的返回结果、标识服务器处理是否正常、表明请求出现的错误等。状态码的类别：<br>在这里插入图片描述</p>
+<pre><code>常用状态码：
+200： 请求被正常处理
+204： 请求被受理但没有资源可以返回
+301： 永久性重定向
+302： 临时重定向
+304： 已缓存
+400： 请求报文语法有误，服务器无法识别
+403： 请求的对应资源禁止被访问
+404： 服务器无法找到对应资源
+500： 服务器内部错误
+503： 服务器正忙
+</code></pre>
+<h3 id="HTTP协议中的请求方式"><a href="#HTTP协议中的请求方式" class="headerlink" title="HTTP协议中的请求方式"></a>HTTP协议中的请求方式</h3><pre><code>GET：用于请求访问已经被URI（统一资源标识符）识别的资源，可以通过URL传参给服务器
+POST：用于传输信息给服务器，主要功能与GET方法类似，但一般推荐使用POST方式。
+PUT： 传输文件，报文主体中包含文件内容，保存到对应URI位置。
+HEAD：获得报文首部，与GET方法类似，只是不返回报文主体，一般用于验证URI是否有效。
+PATCH： 客户端向服务器传送的数据取代指定的文档的内容(部分取代)
+TRACE： 回显客户端请求服务器的原始请求报文，用于&quot;回环&quot;诊断
+DELETE： 删除文件，与PUT方法相反，删除对应URI位置的文件。
+OPTIONS： 查询相应URI支持的HTTP方法。
+</code></pre>
+<h3 id="GET方法与POST方法的区别"><a href="#GET方法与POST方法的区别" class="headerlink" title="GET方法与POST方法的区别"></a>GET方法与POST方法的区别</h3><ul>
+<li>功能上： GET一般用来从服务器上获取资源，POST一般用来更新服务器上的资源；</li>
+<li>安全性： GET是不安全的，因为GET请求提交的数据将明文出现在URL上（请求头上），可能会泄露私密信息；POST请求参数则被包装到请求体中，相对更安全。</li>
+<li>数据量： Get传输的数据量小，因为受URL长度限制，但效率较高； Post可以传输大量数据，所以上传文件时只能用Post方式；</li>
+</ul>
+<h2 id="Session-与-Cookie-的对比"><a href="#Session-与-Cookie-的对比" class="headerlink" title="Session 与 Cookie 的对比"></a>Session 与 Cookie 的对比</h2><p>cookie：cookie是由Web服务器保存在用户浏览器上的文件（key-value格式），可以包含用户相关的信息。客户端向服务器发起请求时，会携带服务器端之前创建的cookie，服务器端通过cookie中携带的数据区分不同的用户。</p>
+<p>session：session 是浏览器和服务器会话过程中，服务器会分配的一块储存空间给session。服务器默认会为客户浏览器的cookie中设置 sessionid，这个sessionid就和cookie对应，浏览器在向服务器请求过程中传输的cookie 包含 sessionid ，服务器根据传输cookie 中的 sessionid 获取出会话中存储的信息，然后确定会话的身份信息。</p>
+<ol>
+<li>安全性：cookie数据存放在客户端上，安全性较差，session数据放在服务器上，安全性相对更高。</li>
+<li>大小限制：cookie有大小限制，单个cookie保存的数据不能超过4K，session无此限制，理论上只与服务器的内存大小有关。</li>
+<li>服务器资源消耗：Session是保存在服务器端上会存在一段时间才会消失，当访问增多，对服务器性能有影响。</li>
+<li>实现机制：Session的实现常常依赖于Cookie机制，通过Cookie机制回传SessionID。</li>
+</ol>
+<p><strong>HTTP协议本身是无法判断用户身份。所以需要cookie或者session</strong>。</p>
+
       
     </div>
 
@@ -370,7 +491,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共32.7k字</span>
+  <span class="post-count">博客全站共36.7k字</span>
 </div>
 
     <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>

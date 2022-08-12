@@ -216,7 +216,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-04 15:43:28" itemprop="dateModified" datetime="2022-07-04T15:43:28+08:00">2022-07-04</time>
+                <time title="修改时间：2022-08-12 11:15:01" itemprop="dateModified" datetime="2022-08-12T11:15:01+08:00">2022-08-12</time>
               </span>
 
           
@@ -247,7 +247,9 @@
 <li>需要事务支持 。</li>
 <li>基于 sql 的结构化查询存储，处理复杂的关系,需要<strong>即席</strong>查询。</li>
 </ul>
-<h2 id="常用五大数据类型"><a href="#常用五大数据类型" class="headerlink" title="常用五大数据类型"></a><strong>常用五大数据类型</strong></h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p>String 类型是二进制安全的。意味着 Redis 的 string 可以包含任何数据。比如 jpg 图片 或者序列化的对象。 </p>
+<h2 id="常用五大数据类型"><a href="#常用五大数据类型" class="headerlink" title="常用五大数据类型"></a><strong>常用五大数据类型</strong></h2><img src="https://cdn.jsdelivr.net/gh/XueZhengXiang/photo/img/redis五大类型.png" style="zoom:120%;">
+
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p>String 类型是二进制安全的。意味着 Redis 的 string 可以包含任何数据。比如 jpg 图片 或者序列化的对象。 </p>
 <p>String 的数据结构为简单动态字符串(Simple Dynamic String,缩写 SDS)。是可以 修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">set k <span class="number">1</span></span><br><span class="line">get k</span><br><span class="line">incr k</span><br><span class="line">decr k</span><br><span class="line">setex k 过期时间 v</span><br></pre></td></tr></table></figure>
 
@@ -605,7 +607,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共32.7k字</span>
+  <span class="post-count">博客全站共36.7k字</span>
 </div>
 
     <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
