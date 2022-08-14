@@ -180,7 +180,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/Springboot/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/28/SpringCloud/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://raw.githubusercontent.com/XueZhengXiang/photo/master/img/avatar.png">
@@ -194,7 +194,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/06/28/Springboot/" class="post-title-link" itemprop="url">Springboot</a>
+            <a href="/2022/06/28/SpringCloud/" class="post-title-link" itemprop="url">SpringCloud</a>
         </h2>
 
         <div class="post-meta">
@@ -209,14 +209,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-06-28 11:33:35" itemprop="dateCreated datePublished" datetime="2022-06-28T11:33:35+08:00">2022-06-28</time>
+              <time title="创建时间：2022-06-28 11:34:09" itemprop="dateCreated datePublished" datetime="2022-06-28T11:34:09+08:00">2022-06-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-29 18:42:53" itemprop="dateModified" datetime="2022-06-29T18:42:53+08:00">2022-06-29</time>
+                <time title="修改时间：2022-08-13 10:54:13" itemprop="dateModified" datetime="2022-08-13T10:54:13+08:00">2022-08-13</time>
               </span>
 
           
@@ -230,7 +230,127 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="Springboot"><a href="#Springboot" class="headerlink" title="Springboot"></a>Springboot</h3>
+          <h2 id="微服务介绍"><a href="#微服务介绍" class="headerlink" title="微服务介绍"></a><strong>微服务介绍</strong></h2><h3 id="系统架构演变"><a href="#系统架构演变" class="headerlink" title="系统架构演变"></a>系统架构演变</h3><p>随着互联网的发展，网站应用的规模也在不断的扩大进，而导致系统架构也在不断的进行变化。互联网早起到现在，系统架构大体经历了下面几个过程: <strong>单体应用架构—&gt;垂直应用架构—&gt;分布式架构—&gt;SOA架构—&gt;微服务架构</strong>，当然还有悄然兴起的Service Mesh(服务网格化)。 </p>
+<p><img src="https://cdn.jsdelivr.net/gh/XueZhengXiang/photo/img/QQ%E6%88%AA%E5%9B%BE20220813095118.png"></p>
+<h2 id="Nacos"><a href="#Nacos" class="headerlink" title="Nacos"></a>Nacos</h2><h3 id="Nacos注册中心-Nacos-Discovery"><a href="#Nacos注册中心-Nacos-Discovery" class="headerlink" title="Nacos注册中心(Nacos Discovery )"></a>Nacos注册中心(Nacos Discovery )</h3><p>管理所有微服务、解决微服务之间调用关系错综复杂、难以维护的问题； </p>
+<h4 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h4><p><strong>服务注册</strong>：Nacos Client会通过发送REST请求的方式向Nacos Server注册自己的服务，提供自身的元数据，比如ip地址、端口等信息。Nacos Server接收到注册请求后，就会把这些元数据信息存储在一个双层的内存Map中。 </p>
+<p><strong>服务心跳</strong>：在服务注册后，Nos Client会维护一个定时心跳来持续通知Nacos Server，说明服务一直处于可用状态，防止被剔除。默认5s发送一次心跳。 </p>
+<p><strong>服务同步</strong>：Nacos Server集群之间会互相同步服务实例，用来保证服务信息的一致性。 leader raft </p>
+<p><strong>服务发现</strong>：服务消费者（Nacos Client）在调用服务提供者的服务时，会发送一个REST请求给Nacos Server，获取上面注册的服务清单，并且缓存在Nacos Client本地，同时会在Nacos Client本地开启一个定时任务定时拉取服务端最新的注册表信息更新到本地缓存 </p>
+<p><strong>服务健康检查</strong>：Nacos Server会开启一个定时任务用来检查注册服务实例的健康情况，对于超过15s没有收到客户端心跳的实例会将它的healthy属性置为false(客户端服务发现时不会发现)，如果某个实例超过30秒没有收到心跳，直接剔除该实例(被剔除的实例如果恢复发送心跳则会重新注册) </p>
+<h3 id="配置中心"><a href="#配置中心" class="headerlink" title="配置中心"></a>配置中心</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  profiles:</span><br><span class="line">    active: dev</span><br><span class="line">  cloud:</span><br><span class="line">    nacos:</span><br><span class="line">      config:</span><br><span class="line">        server-addr: <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8848</span></span><br><span class="line">        file-extension: yaml  # 配置文件格式</span><br><span class="line">        namespace: 5d030425-<span class="number">9052</span>-<span class="number">4692</span>-<span class="number">8808</span>-ea7465ddf0bd</span><br><span class="line">  application:</span><br><span class="line">    name: service-sta</span><br></pre></td></tr></table></figure>
+
+<p>​	</p>
+<h2 id="Ribbon"><a href="#Ribbon" class="headerlink" title="Ribbon"></a>Ribbon</h2><h3 id="客户端的负载均衡ribbon"><a href="#客户端的负载均衡ribbon" class="headerlink" title="客户端的负载均衡ribbon"></a>客户端的负载均衡ribbon</h3><p>例如spring cloud中的ribbon，客户端会有一个服务器地址列表，在发送请求前通过负载均衡算法选择一个服务器，然后进行访问，这是 </p>
+<p>客户端负载均衡；即在客户端就进行负载均衡算法分配。 </p>
+<h3 id="服务端的负载均衡Nginx"><a href="#服务端的负载均衡Nginx" class="headerlink" title="服务端的负载均衡Nginx"></a>服务端的负载均衡Nginx</h3><p>例如Nginx，通过Nginx进行负载均衡，先发送请求，然后通过负载均衡算法，在多个服务器之间选择一个进行访问；即在服务器端再进 </p>
+<p>行负载均衡算法分配。 </p>
+<p><strong>常见负载均衡算法</strong> </p>
+<ul>
+<li>随机，通过随机选择服务进行执行，一般这种方式使用较少; </li>
+<li>轮训，负载均衡默认实现方式，请求来之后排队处理; </li>
+<li>加权轮训，通过对服务器性能的分型，给高配置，低负载的服务器分配更高的权重，均衡各个服务器的压力; </li>
+<li>地址Hash，通过客户端请求的地址的HASH值取模映射进行服务器调度。 ip —&gt;hash </li>
+<li>最小链接数，即使请求均衡了，压力不一定会均衡，最小连接数法就是根据服务器的情况，比如请求积压数等参数，将请求分 </li>
+<li>配到当前压力最小的服务器上。 最小活跃数</li>
+</ul>
+<h2 id="Feign"><a href="#Feign" class="headerlink" title="Feign"></a>Feign</h2><p>Feign可以做到使用 HTTP 请求远程服务时就像调用本地方法一样的体验，开发者完全感知不 到这是远程方法，更感知不到这是个 HTTP 请求。它像 Dubbo 一样，consumer 直接调用接 口方法调用 provider，而不需要通过常规的 Http Client 构造请求再解析返回数据。它解决了让开发者调用远程接口就跟调用本地方法一样，无需关注与远程的交互细节，更无需关注分布式环境开发.</p>
+<p><strong>1、引入依赖</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> &lt;!‐‐ openfeign 远程调用 ‐‐&gt; </span><br><span class="line"></span><br><span class="line">&lt;dependency&gt; </span><br><span class="line"></span><br><span class="line"> &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; </span><br><span class="line"></span><br><span class="line">&lt;artifactId&gt;spring‐cloud‐starter‐openfeign&lt;/artifactId&gt; </span><br><span class="line"></span><br><span class="line"> &lt;/dependency&gt; </span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>2、编写调用接口+@FeignClient注解</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">@FeignClient(value = &quot;mall‐order&quot;,path = &quot;/order&quot;)</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">OrderFeignService</span> &#123; </span><br><span class="line"> <span class="meta">@RequestMapping(&quot;/findOrderByUserId/&#123;userId&#125;&quot;)</span> </span><br><span class="line">  <span class="keyword">public</span> R <span class="title function_">findOrderByUserId</span><span class="params">(<span class="meta">@PathVariable(&quot;userId&quot;)</span> Integer userId)</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderFeignServiceImpl</span> implments OrderFeignService&#123;</span><br><span class="line">     <span class="keyword">public</span> R <span class="title function_">findOrderByUserId</span><span class="params">()</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3、调用端在启动类上添加@EnableFeignClients注解</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span> </span><br><span class="line"><span class="meta">@EnableFeignClients</span> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MallUserFeignDemoApplication</span> &#123; </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123; </span><br><span class="line">   SpringApplication.run(MallUserFeignDemoApplication.class, args); </span><br><span class="line"> &#125; </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p><strong>4、发起调用，像调用本地方式一样调用远程服务</strong> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span> </span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/user&quot;)</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123; </span><br><span class="line"></span><br><span class="line"><span class="meta">@Autowired</span> </span><br><span class="line"></span><br><span class="line">OrderFeignService orderFeignService; </span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/findOrderByUserId/&#123;id&#125;&quot;)</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> R <span class="title function_">findOrderByUserId</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span> &#123; </span><br><span class="line"></span><br><span class="line"><span class="comment">//feign调用 </span></span><br><span class="line"></span><br><span class="line"><span class="type">R</span> <span class="variable">result</span> <span class="operator">=</span> orderFeignService.findOrderByUserId(id); </span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> result; </span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Sentinel-分布式系统的流量防卫兵"><a href="#Sentinel-分布式系统的流量防卫兵" class="headerlink" title="Sentinel: 分布式系统的流量防卫兵"></a>Sentinel: 分布式系统的流量防卫兵</h2><h3 id="Sentinel是什么"><a href="#Sentinel是什么" class="headerlink" title="Sentinel是什么"></a>Sentinel是什么</h3><p>随着微服务的流行，服务和服务之间的稳定性变得越来越重要。Sentinel 是面向分布式服务架构的流量控制组件，主要以流量为切入点，从限流、流量整形、熔断降级、系统负载保护、热点防护等多个维度来帮助开发者保障微服务的稳定性。</p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/alibaba/Sentinel">https://github.com/alibaba/Sentinel</a> </p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://github.com/alibaba/Sentinel/wiki">https://github.com/alibaba/Sentinel/wiki</a> </p>
+<p>Sentinel具有以下特征: </p>
+<p><strong>丰富的应用场景</strong>： Sentinel 承接了阿里巴巴近 10 年的双十一大促流量的核心场景，例如秒杀（即突发流量控制在系统容量可以承受的范围）、消息削峰填谷、实时熔断下游不可用应用等。 </p>
+<p><strong>完备的实时监控</strong>： Sentinel 同时提供实时的监控功能。您可以在控制台中看到接入应用的单台机器秒级数据，甚至 500 台以下规模的集群的汇总运行情况。 </p>
+<p><strong>广泛的开源生态</strong>： Sentinel 提供开箱即用的与其它开源框架&#x2F;库的整合模块，例如与 Spring Cloud、Dubbo、 gRPC 的整合。您只需要引入相应的依赖并进行简单的配置即可快速地接入 Sentinel。 </p>
+<p><strong>完善的</strong> <strong>SPI</strong> <strong>扩展点</strong>： Sentinel 提供简单易用、完善的 SPI 扩展点。您可以通过实现扩展点，快速的定制逻辑。例如定制规则管理、适配数据源等。</p>
+<h3 id="Sentinel和Hystrix对比"><a href="#Sentinel和Hystrix对比" class="headerlink" title="Sentinel和Hystrix对比"></a><strong>Sentinel和Hystrix对比</strong></h3><table>
+<thead>
+<tr>
+<th>对比</th>
+<th>Sentinel</th>
+<th>Hystrix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>隔离策略</td>
+<td>信号量隔离</td>
+<td>线程池隔离&#x2F;信号量隔离</td>
+</tr>
+<tr>
+<td>熔断降级策略</td>
+<td>基于响应时间&#x2F;失败比例</td>
+<td>基于失败比例</td>
+</tr>
+<tr>
+<td>实时指标实现</td>
+<td>滑动窗口</td>
+<td>滑动窗口（基于RxJava）</td>
+</tr>
+<tr>
+<td>规则配置</td>
+<td>支持多种数据源</td>
+<td>支持多种数据源</td>
+</tr>
+<tr>
+<td>扩展性</td>
+<td>多个扩展点</td>
+<td>插件的形式</td>
+</tr>
+<tr>
+<td>基于注解的形式</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>限流</td>
+<td>基于QPS,支持基于调用关系的限流</td>
+<td>有限的支持</td>
+</tr>
+<tr>
+<td>控制台</td>
+<td>开箱即用</td>
+<td>不完善</td>
+</tr>
+<tr>
+<td>常见的框架适配</td>
+<td>Servlet、SpringCloud、DUbbo、gRPC</td>
+<td>Servlet、SpringCloud Netflix</td>
+</tr>
+</tbody></table>
+<h2 id="Seta"><a href="#Seta" class="headerlink" title="Seta"></a>Seta</h2><h3 id="常见分布式事务解决方案"><a href="#常见分布式事务解决方案" class="headerlink" title="常见分布式事务解决方案"></a><strong>常见分布式事务解决方案</strong></h3><p><strong>1、seata 阿里分布式事务框架</strong> </p>
+<p><strong>2、消息队列</strong> </p>
+<p><strong>3、saga</strong> </p>
+<p><strong>4、XA</strong> </p>
+<h2 id="Gatway"><a href="#Gatway" class="headerlink" title="Gatway"></a>Gatway</h2><p><strong>网关作为流量的入口，常用的功能包括路由转发，权限校验，限流等。</strong> </p>
+<p>Spring Cloud Gateway 是Spring Cloud官方推出的第二代网关框架，定位于取代 Netflix Zuul1.0。相比 Zuul 来说，Spring Cloud </p>
+<p>Gateway 提供更优秀的性能，更强大的有功能。 </p>
+<p>Spring Cloud Gateway 是由 WebFlux + Netty + Reactor 实现的响应式的 API 网关。<strong>它不能在传统的 servlet 容器中工作，也不能构</strong> </p>
+<p><strong>建成 war 包</strong>。 </p>
+<p>Spring Cloud Gateway 旨在为微服务架构提供一种简单且有效的 API 路由的管理方式，并基于 Filter 的方式提供网关的基本功能，例如 </p>
+<p>说安全认证、监控、限流等等。 </p>
+<h2 id="Skywalking主要功能特性"><a href="#Skywalking主要功能特性" class="headerlink" title="Skywalking主要功能特性"></a>Skywalking主要功能特性</h2><p>1、多种监控手段，可以通过语言探针和service mesh获得监控的数据； </p>
+<p>2、支持多种语言自动探针，包括 Java，.NET Core 和 Node.JS； </p>
+<p>3、轻量高效，无需大数据平台和大量的服务器资源； </p>
+<p>4、模块化，UI、存储、集群管理都有多种机制可选； </p>
+<p>5、支持告警； </p>
+<p>6、优秀的可视化解决方案；</p>
+
       
     </div>
 
